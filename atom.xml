@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://rogn.top/"/>
-  <updated>2020-01-20T08:42:55.038Z</updated>
+  <updated>2020-01-20T09:10:21.177Z</updated>
   <id>https://rogn.top/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://rogn.top/2020/01/20/newyear/"/>
     <id>https://rogn.top/2020/01/20/newyear/</id>
     <published>2020-01-20T07:04:36.000Z</published>
-    <updated>2020-01-20T08:42:55.038Z</updated>
+    <updated>2020-01-20T09:10:21.177Z</updated>
     
     <content type="html"><![CDATA[<p>今天是大寒，过几天就过年了。<br>在家养生是真的舒服！<br><img src="https://cdn.jsdelivr.net/gh/growvv/img/images/20200120151311.png" alt=""></p>]]></content>
     
@@ -35,6 +35,8 @@
     
     </summary>
     
+    
+      <category term="生活" scheme="https://rogn.top/categories/%E7%94%9F%E6%B4%BB/"/>
     
     
       <category term="寒假" scheme="https://rogn.top/tags/%E5%AF%92%E5%81%87/"/>
