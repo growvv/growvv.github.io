@@ -27,7 +27,7 @@
     exturl: false,
     sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
     copycode: {"enable":false,"show_result":false,"style":null},
-    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
     bookmark: {"enable":false,"color":"#222","save":"auto"},
     fancybox: true,
     mediumzoom: false,
@@ -217,7 +217,7 @@
     <link itemprop="mainEntityOfPage" href="https://rogn.top/2020/01/20/newyear/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/growvv/img/images/20200120155454.jpg">
       <meta itemprop="name" content="刘大小">
       <meta itemprop="description" content="越努力越幸运">
     </span>
@@ -361,6 +361,8 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘大小"
+      src="https://cdn.jsdelivr.net/gh/growvv/img/images/20200120155454.jpg">
   <p class="site-author-name" itemprop="name">刘大小</p>
   <div class="site-description" itemprop="description">越努力越幸运</div>
 </div>
@@ -457,9 +459,14 @@
                 console.error('Failed to save visitor count', error);
               })
           } else {
-              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
-              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
-            
+              Counter('post', '/classes/Counter', { title: title, url: url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.error('Failed to create', error);
+                });
           }
         })
         .catch(error => {
@@ -586,7 +593,7 @@ NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
       notify: true,
       appId: 'T4y1doOhI3dmbSAq3vSnBV1T-gzGzoHsz',
       appKey: 'poLzVJBLoYkuCQQfdwmlWku4',
-      placeholder: "Just do it",
+      placeholder: "不留下邮箱的话，就没有办法邮件回复喔~",
       avatar: 'retro',
       meta: guest,
       pageSize: '10' || 10,
@@ -600,5 +607,5 @@ NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
 });
 </script>
 
-</body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
 </html>
