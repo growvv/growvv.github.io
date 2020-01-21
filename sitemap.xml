@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://rogn.top/hello-world/</loc>
+    
+    <lastmod>2020-01-21T08:32:48.004Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://rogn.top/categories/index.html</loc>
     
     <lastmod>2020-01-21T04:19:01.565Z</lastmod>
@@ -26,13 +33,6 @@
     <loc>https://rogn.top/newyear/</loc>
     
     <lastmod>2020-01-20T12:53:11.398Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://rogn.top/hello-world/</loc>
-    
-    <lastmod>2020-01-20T02:48:26.603Z</lastmod>
     
   </url>
   
