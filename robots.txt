@@ -3,6 +3,8 @@ Allow: /
 Allow: /home/
 Allow: /about/
 Allow: /archives/
+Allow: /categories/
+Allow: /tags/
 Disallow: /js/
 Disallow: /css/
 Disallow: /fonts/
@@ -10,5 +12,5 @@ Disallow: /vendors/
 Disallow: /fancybox/
 Disallow: /categories/
 
-Sitemap: http://www.rogn.top/sitemap.xml
-Sitemap: http://www.rogn.top/baidusitemap.xml
+Sitemap: http://rogn.top/sitemap.xml
+Sitemap: http://rogn.top/baidusitemap.xml
