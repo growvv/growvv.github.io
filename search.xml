@@ -15,7 +15,7 @@
   <entry>
     <title>新年倒计时</title>
     <url>/newyear/</url>
-    <content><![CDATA[<p>今天是大寒，过几天就过年了。<br>在家养生是真的舒服！<br><img src="https://cdn.jsdelivr.net/gh/growvv/img/images/20200120151311.png" alt=""></p>
+    <content><![CDATA[<p>今天是大寒，过几天就过年了。<br>在家养生是真的舒服！<br><img data-src="https://cdn.jsdelivr.net/gh/growvv/img/images/20200120151311.png" alt=""></p>
 ]]></content>
       <categories>
         <category>生活</category>
