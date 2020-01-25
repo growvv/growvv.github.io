@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://rogn.top/"/>
-  <updated>2020-01-25T13:20:44.445Z</updated>
+  <updated>2020-01-25T13:41:13.860Z</updated>
   <id>https://rogn.top/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://rogn.top/%E5%AE%85/"/>
     <id>https://rogn.top/%E5%AE%85/</id>
     <published>2020-01-25T13:00:37.000Z</published>
-    <updated>2020-01-25T13:20:44.445Z</updated>
+    <updated>2020-01-25T13:41:13.860Z</updated>
     
     <content type="html"><![CDATA[<p>终于到了啥也不干在家躺着就能给社会作贡献的时候了。</p>]]></content>
     
@@ -36,6 +36,10 @@
     </summary>
     
     
+      <category term="生活" scheme="https://rogn.top/categories/%E7%94%9F%E6%B4%BB/"/>
+    
+    
+      <category term="寒假" scheme="https://rogn.top/tags/%E5%AF%92%E5%81%87/"/>
     
   </entry>
   
