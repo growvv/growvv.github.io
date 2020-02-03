@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://rogn.top/"/>
-  <updated>2020-01-31T03:24:12.456Z</updated>
+  <updated>2020-02-03T03:47:34.723Z</updated>
   <id>https://rogn.top/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Sublime Text配置文件</title>
+    <link href="https://rogn.top/Sublime-Text%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/"/>
+    <id>https://rogn.top/Sublime-Text%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/</id>
+    <published>2020-02-03T03:44:56.000Z</published>
+    <updated>2020-02-03T03:47:34.723Z</updated>
+    
+    <content type="html"><![CDATA[<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;translate_tabs_to_spaces&quot;: true,  &#x2F;&#x2F;tab 转换为空格</span><br><span class="line">&quot;ensure_newline_at_eof_on_save&quot;: true,  &#x2F;&#x2F;保存时末尾自动增加一个空行</span><br><span class="line">&quot;trim_trailing_white_space_on_save&quot;: true  &#x2F;&#x2F;删除行尾多余的空格</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class
+      
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="https://rogn.top/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="杂项" scheme="https://rogn.top/tags/%E6%9D%82%E9%A1%B9/"/>
+    
+  </entry>
   
   <entry>
     <title>有人可以模仿领导的口吻跟我说一句话吗？</title>
