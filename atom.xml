@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://rogn.top/"/>
-  <updated>2020-02-03T03:47:34.723Z</updated>
+  <updated>2020-02-03T14:59:41.367Z</updated>
   <id>https://rogn.top/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>多端互动演示工具</title>
+    <link href="https://rogn.top/%E5%A4%9A%E7%AB%AF%E4%BA%92%E5%8A%A8%E6%BC%94%E7%A4%BA%E5%B7%A5%E5%85%B7/"/>
+    <id>https://rogn.top/%E5%A4%9A%E7%AB%AF%E4%BA%92%E5%8A%A8%E6%BC%94%E7%A4%BA%E5%B7%A5%E5%85%B7/</id>
+    <published>2020-02-03T14:44:50.000Z</published>
+    <updated>2020-02-03T14:59:41.367Z</updated>
+    
+    <content type="html"><![CDATA[<p><img data-src="https://cdn.jsdelivr.net/gh/growvv/img/images/20200203225755.jpg" alt=""></p><a id="more"></a><p>第一次体验是在大一的年级大会，可以微信扫码留言，觉得很nb。如今我已经大三，还是这么菜……</p><p>现在，这样的产品国内外都有很多。</p><p>主要功能包括：</p><ul><li>签到</li><li>聊天上墙</li><li>现场抽奖</li><li>现场投票</li><li>数据分析</li></ul><p>这类软件在国内多被称为“现场/大屏互动”工具，<a href="https://www.hixianchang.com/" target="_blank" rel="noopener">Hi现场</a>是这类产品的代表。这类产品功能丰富且贴近国情（微信、弹幕、摇一摇），同样界面也很接地气——眼花缭乱、纷繁复杂😵。</p><p>后来找到一个面向国内的产品<a href="https://picpiclive.com/zh-cn/" target="_blank" rel="noopener">皮豆互动</a>还不错。</p><p>国外的试过<a href="https://www.sli.do/" target="_blank" rel="noopener">Slido</a>。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img data-src=&quot;https://cdn.jsdelivr.net/gh/growvv/img/images/20200203225755.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="生活" scheme="https://rogn.top/categories/%E7%94%9F%E6%B4%BB/"/>
+    
+    
+      <category term="杂项" scheme="https://rogn.top/tags/%E6%9D%82%E9%A1%B9/"/>
+    
+  </entry>
   
   <entry>
     <title>Sublime Text配置文件</title>
