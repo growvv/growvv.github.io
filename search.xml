@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>那些有趣的博客</title>
+    <url>/blog-interesting/</url>
+    <content><![CDATA[<h2 id="综合"><a href="#综合" class="headerlink" title="综合"></a>综合</h2><ul>
+<li><a href="http://www.ruanyifeng.com/blog/" target="_blank" rel="noopener">阮一峰的网络日志</a></li>
+</ul>
+<h2 id="数学"><a href="#数学" class="headerlink" title="数学"></a>数学</h2><ul>
+<li><a href="https://www.matrix67.com/blog/" target="_blank" rel="noopener">Matrix67</a>-许多经典问题</li>
+</ul>
+<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><h2 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h2><ul>
+<li><a href="https://morvanzhou.github.io/" target="_blank" rel="noopener">莫烦PYTHON</a>-Python基础和机器学习</li>
+<li><a href="https://foofish.net/" target="_blank" rel="noopener">FOOFISH-PYTHON之禅</a>-Django入门与实践</li>
+</ul>
+<h2 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h2><h2 id="后端"><a href="#后端" class="headerlink" title="后端"></a>后端</h2><h2 id="ML"><a href="#ML" class="headerlink" title="ML"></a>ML</h2><h2 id="运维"><a href="#运维" class="headerlink" title="运维"></a>运维</h2><h2 id="设计"><a href="#设计" class="headerlink" title="设计"></a>设计</h2><h2 id="心理学"><a href="#心理学" class="headerlink" title="心理学"></a>心理学</h2><h2 id="艺术"><a href="#艺术" class="headerlink" title="艺术"></a>艺术</h2><h2 id="网络安全"><a href="#网络安全" class="headerlink" title="网络安全"></a>网络安全</h2><ul>
+<li><a href="https://www.sqlsec.com/" target="_blank" rel="noopener">国光</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>杂项</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>在博客中展示Github-Chart</title>
     <url>/%E5%9C%A8%E5%8D%9A%E5%AE%A2%E4%B8%AD%E5%B1%95%E7%A4%BAGithub-Chart/</url>
     <content><![CDATA[<p>今天给大家介绍一个很有意思的网站：<a href="https://ghchart.rshah.org/" target="_blank" rel="noopener">GitHub Chart API</a></p>
