@@ -4,7 +4,9 @@
     <title>那些有趣的博客</title>
     <url>/blog-interesting/</url>
     <content><![CDATA[<h2 id="综合"><a href="#综合" class="headerlink" title="综合"></a>综合</h2><ul>
-<li><a href="http://www.ruanyifeng.com/blog/" target="_blank" rel="noopener">阮一峰的网络日志</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/" target="_blank" rel="noopener">阮一峰的网络日志</a><a id="more"></a>
+
+</li>
 </ul>
 <h2 id="数学"><a href="#数学" class="headerlink" title="数学"></a>数学</h2><ul>
 <li><a href="https://www.matrix67.com/blog/" target="_blank" rel="noopener">Matrix67</a>-许多经典问题</li>
@@ -154,7 +156,7 @@
   </entry>
   <entry>
     <title>摸鱼</title>
-    <url>/%E6%91%B8%E9%B1%BC/</url>
+    <url>/mm-fish/</url>
     <content><![CDATA[<p><img data-src="https://cdn.jsdelivr.net/gh/growvv/img/images/20200118230802.jpg" alt=""></p>
 <p>今天又是元气满满的一天。</p>
 <a id="more"></a>
