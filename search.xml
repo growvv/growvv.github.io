@@ -3,13 +3,13 @@
   <entry>
     <title>用七牛云搭建免费图床</title>
     <url>/qiniu-img-bed/</url>
-    <content><![CDATA[<p><strong>警告</strong>：<font color=red>该方案仅作测设使用，测试域名每隔一个月会自动变更，导致图片链接失效。</font></p>
+    <content><![CDATA[<p><strong>警告</strong>：<font color=red>该方案仅作测试使用，因为七牛云提供的测试域名每隔一个月会自动变更，导致图片链接失效。</font></p>
 <p>之前用GitHub搭建了一个图床，套上CDN速度也还行。但是一直想体验专业的云存储服务，七牛云提供10G免费空间，遂体验一番。</p>
 <a id="more"></a>
 
 <h2 id="一、注册七牛云并创建对象存储"><a href="#一、注册七牛云并创建对象存储" class="headerlink" title="一、注册七牛云并创建对象存储"></a>一、注册七牛云并创建对象存储</h2><ol>
 <li>进入<a href="https://portal.qiniu.com/" target="_blank" rel="noopener">七牛云官网</a>，注册，实名认证（不知道不认证行不行，反正smrz国内已司空见惯）。</li>
-<li>创建存储对象。存储空间名称随便取，存储区域选个离得近点的，访问控制选公开，毕竟要能通过外链分享的。<br><img data-src="https://cdn.jsdelivr.net/gh/growvv/img/images/20200207211448.png" alt=""></li>
+<li>创建存储对象。存储空间名称随便取，存储区域选个离得近点的，访问控制选公开，毕竟要能通过外链分享的。<br><img data-src="https://cdn.jsdelivr.net/gh/growvv/img/images/20200207211448.png" alt="存储空间设置"></li>
 </ol>
 <h2 id="二、配置PicGo"><a href="#二、配置PicGo" class="headerlink" title="二、配置PicGo"></a>二、配置PicGo</h2><h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>图片上传管理工具很多，这里推荐PicGo.</p>
 <ol>
@@ -17,9 +17,9 @@
 <li>访问网址，如果没有绑定自定义域名就用它给的测试域名</li>
 <li>“z0” | “z1” | “z2” | “na0” | “as0”, // 存储区域编号</li>
 <li>网址后缀建议不填（后面会讲）</li>
-<li>存储路径可以不填<br><img data-src="https://cdn.jsdelivr.net/gh/growvv/img/images/20200207212355.png" alt=""></li>
+<li>存储路径可以不填<br><img data-src="https://cdn.jsdelivr.net/gh/growvv/img/images/20200207212355.png" alt="PicGo七牛图床设置"></li>
 </ol>
-<h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><p> 网址后缀建议不填，而是修改PicGo设置–&gt;自定义链接格式，在url后加 <code>?imageslim</code>，能自动对图片压缩，详见<a href="https://developer.qiniu.com/dora/api/1271/image-thin-body-imageslim" target="_blank" rel="noopener">图片瘦身</a>。在上传图片的时候链接格式选Custom即可，不想压缩则选其他。<br><img data-src="https://cdn.jsdelivr.net/gh/growvv/img/images/20200207212603.png" alt=""></p>
+<h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><p> 网址后缀建议不填，而是修改PicGo设置–&gt;自定义链接格式，在url后加 <code>?imageslim</code>，能自动对图片压缩，详见<a href="https://developer.qiniu.com/dora/api/1271/image-thin-body-imageslim" target="_blank" rel="noopener">图片瘦身</a>。在上传图片的时候链接格式选Custom即可，不想压缩则选其他。<br><img data-src="https://cdn.jsdelivr.net/gh/growvv/img/images/20200207212603.png" alt="自定义链接"></p>
 <h2 id="三、有待改进"><a href="#三、有待改进" class="headerlink" title="三、有待改进"></a>三、有待改进</h2><ol>
 <li>有空给域名备个案？</li>
 <li>自己写个简单的图片上传工具（electron/chrome扩展/python?），参考链接3中的那个貌似就还不错。</li>
@@ -29,7 +29,7 @@
 <li><a href="https://blog.csdn.net/yefcion/article/details/82314069" target="_blank" rel="noopener">yefcion-搭建自己的图床：七牛云+Mpic【弃】</a></li>
 <li><a href="https://segmentfault.com/a/1190000013374209" target="_blank" rel="noopener">neal-通过七牛云建立私有图床</a></li>
 </ol>
-<p>附：<br><img data-src="http://q5bzrqs1j.bkt.clouddn.com/FrYeD7BTfClVSPDOHmpWKfJcMiBh" alt="测试图片"></p>
+<p>附：<br><img data-src="http://q5bzrqs1j.bkt.clouddn.com/FrYeD7BTfClVSPDOHmpWKfJcMiBh" alt="my-qiniu-is-ok?"></p>
 ]]></content>
       <categories>
         <category>技术</category>
