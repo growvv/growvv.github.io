@@ -23,13 +23,17 @@
 <h2 id="三、有待改进"><a href="#三、有待改进" class="headerlink" title="三、有待改进"></a>三、有待改进</h2><ol>
 <li>有空给域名备个案？</li>
 <li>自己写个简单的图片上传工具（electron/chrome扩展/python?），参考链接3中的那个貌似就还不错。</li>
+<li>测试域名过期了怎么办？只是外链失效，存储空间中还有，可以考虑批量替换md中的图片链接。<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sed -i <span class="string">"s#//.*bkt.clouddn#//new.bkt.clouddn#g"</span> file.md</span><br></pre></td></tr></table></figure>
+
+</li>
 </ol>
 <h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ol>
 <li><a href="https://picgo.github.io/PicGo-Doc/zh/guide/config.html#%E4%B8%83%E7%89%9B%E5%9B%BE%E5%BA%8A" target="_blank" rel="noopener">PicGo官方文档-七牛图床配置</a></li>
 <li><a href="https://blog.csdn.net/yefcion/article/details/82314069" target="_blank" rel="noopener">yefcion-搭建自己的图床：七牛云+Mpic【弃】</a></li>
 <li><a href="https://segmentfault.com/a/1190000013374209" target="_blank" rel="noopener">neal-通过七牛云建立私有图床</a></li>
+<li><a href="https://www.jianshu.com/p/2097bef17cbe" target="_blank" rel="noopener">leil_-替换七牛云测试链接</a></li>
 </ol>
-<p>附：<br><img data-src="http://q5bzrqs1j.bkt.clouddn.com/FrYeD7BTfClVSPDOHmpWKfJcMiBh" alt="my-qiniu-is-ok?"></p>
+<p><img data-src="http://q5bzrqs1j.bkt.clouddn.com/FrYeD7BTfClVSPDOHmpWKfJcMiBh" alt="my-qiniu-is-ok?"></p>
 ]]></content>
       <categories>
         <category>技术</category>
