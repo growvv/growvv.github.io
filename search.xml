@@ -3,11 +3,10 @@
   <entry>
     <title>用七牛云搭建免费图床</title>
     <url>/qiniu-img-bed/</url>
-    <content><![CDATA[<p><img data-src="http://q5bzrqs1j.bkt.clouddn.com/FrYeD7BTfClVSPDOHmpWKfJcMiBh" alt="七牛云真辣鸡"></p>
+    <content><![CDATA[<p><strong>警告</strong>：<font color=red>该方案仅作测设使用，测试域名每隔一个月会自动变更，导致图片链接失效。</font></p>
+<p>之前用GitHub搭建了一个图床，套上CDN速度也还行。但是一直想体验专业的云存储服务，七牛云提供10G免费空间，遂体验一番。</p>
 <a id="more"></a>
 
-<p><strong>警告</strong>：<font color=red>该方案仅作测设使用，测试域名每隔一个月会自动变更，导致图片链接失效。</font></p>
-<p>之前用GitHub搭建了一个图床，套上CDN速度也还行。但是一直想体验专业的云存储服务，七牛云提供10G免费空间，遂体验一番。</p>
 <h2 id="一、注册七牛云并创建对象存储"><a href="#一、注册七牛云并创建对象存储" class="headerlink" title="一、注册七牛云并创建对象存储"></a>一、注册七牛云并创建对象存储</h2><ol>
 <li>进入<a href="https://portal.qiniu.com/" target="_blank" rel="noopener">七牛云官网</a>，注册，实名认证（不知道不认证行不行，反正smrz国内已司空见惯）。</li>
 <li>创建存储对象。存储空间名称随便取，存储区域选个离得近点的，访问控制选公开，毕竟要能通过外链分享的。<br><img data-src="https://cdn.jsdelivr.net/gh/growvv/img/images/20200207211448.png" alt=""></li>
@@ -30,6 +29,7 @@
 <li><a href="https://blog.csdn.net/yefcion/article/details/82314069" target="_blank" rel="noopener">yefcion-搭建自己的图床：七牛云+Mpic【弃】</a></li>
 <li><a href="https://segmentfault.com/a/1190000013374209" target="_blank" rel="noopener">neal-通过七牛云建立私有图床</a></li>
 </ol>
+<p>附：<br><img data-src="http://q5bzrqs1j.bkt.clouddn.com/FrYeD7BTfClVSPDOHmpWKfJcMiBh" alt="测试图片"></p>
 ]]></content>
       <categories>
         <category>技术</category>
