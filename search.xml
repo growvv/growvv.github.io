@@ -6,6 +6,7 @@
     <content><![CDATA[<p>之前在群友利用OneDrive搭建的网盘看《庆余年》，页面简介、速度流畅，体验很好。</p>
 <p>最近看到一个Serverless版搭建教程，于是开始上手。</p>
 <p><a href="https://pan.rogn.top/" target="_blank" rel="noopener">效果展示</a></p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/growvv/img/images/20200208162602.png" alt=""></p>
 <a id="more"></a>
 
 <h2 id="一、准备OneDrive账号"><a href="#一、准备OneDrive账号" class="headerlink" title="一、准备OneDrive账号"></a>一、准备OneDrive账号</h2><p>临时邮箱网址：<a href="https://t.odmail.cn/" target="_blank" rel="noopener">https://t.odmail.cn/</a></p>
@@ -14,7 +15,6 @@
 <p>详见教程见<a href="https://www.mad-coding.cn/2019/08/09/onedrive-oneindex%E6%89%93%E9%80%A0%E5%B1%9E%E4%BA%8E%E8%87%AA%E5%B7%B1%E7%9A%84%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%9B%98/#0x02-%E6%B3%A8%E5%86%8C365%E9%82%AE%E7%AE%B1" target="_blank" rel="noopener">madcoding-onedrive+oneindex打造属于自己的个人网盘</a>，该教程中推荐的上传工具<a href="https://www.mad-coding.cn/2019/08/09/onedrive-oneindex%E6%89%93%E9%80%A0%E5%B1%9E%E4%BA%8E%E8%87%AA%E5%B7%B1%E7%9A%84%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%9B%98/#%E3%80%90%E6%96%B9%E6%B3%95%E4%B8%80-RaiDrive%E3%80%91" target="_blank" rel="noopener">RaiDrive</a>也不错</p>
 <h2 id="二、搭建之路"><a href="#二、搭建之路" class="headerlink" title="二、搭建之路"></a>二、搭建之路</h2><p>网上有较完整的教程，主要参考IOIOX大佬的这篇-<a href="https://www.ioiox.com/archives/71.html" target="_blank" rel="noopener">腾讯云SCF云函数无服务器部署OneDrive分享网盘</a></p>
 <p>唯一需要纠正的是：配置网盘（即那几个环境变量）步骤要放到部署网盘前，不然最后OneDrive页面跳不出来。</p>
-<h2 id="上传工具"><a href="#上传工具" class="headerlink" title="上传工具"></a>上传工具</h2><p>推荐上传工具</p>
 <h2 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h2><ol>
 <li>速度没有之前体验的那么快，是OneDrive账号的原因吗？</li>
 <li>UI有待改进</li>
