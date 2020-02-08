@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://rogn.top/"/>
-  <updated>2020-02-08T08:26:30.674Z</updated>
+  <updated>2020-02-08T12:41:56.740Z</updated>
   <id>https://rogn.top/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hexo 框架 Next 主题添加自定义 Page</title>
+    <link href="https://rogn.top/new-page/"/>
+    <id>https://rogn.top/new-page/</id>
+    <published>2020-02-08T10:12:00.000Z</published>
+    <updated>2020-02-08T12:41:56.740Z</updated>
+    
+    <content type="html"><![CDATA[<p>由于自己最近做了各种杂七杂八的网站，有时自己想访问都忘记网址，所以想汇总一下，放到博客主页。</p><p>放到友链处显然不太合适，考虑新建一个Page.</p><p><a href="https://rogn.top/links/">查看效果</a></p><h2 id="一、步骤"><a href="#一、步骤" class="headerlink" title="一、步骤"></a>一、步骤</h2><h3 id="1-新增links"><a href="#1-新增links" class="headerlink" title="1.新增links"></a>1.新增links</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new page links</span><br></pre></td></tr></table></figure><p>也可在<code>source</code>目录下手动创建<code>links</code>目录（还需要手动创建<code>index.md</code>文件）</p><h2 id="2-配置menu"><a href="#2-配置menu" class="headerlink" title="2.配置menu"></a>2.配置menu</h2><p>主题配置文件<code>_config.yml</code>中<code>menu</code>下添加：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">links: /links/ || link</span><br></pre></td></tr></table></figure><p><code>/themes/next/languages/zh-Hans.yml</code>文件中<code>menu</code>下增加中文描述：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">links: 友链</span><br></pre></td></tr></table></figure><h2 id="3-编辑md文件"><a href="#3-编辑md文件" class="headerlink" title="3.编辑md文件"></a>3.编辑md文件</h2><p>打开<code>source/links</code>下的<code>index.md</code>文件编辑。</p><p>若你想关闭评论，在头部设置<code>comments: false</code></p><h2 id="二、有待改进"><a href="#二、有待改进" class="headerlink" title="二、有待改进"></a>二、有待改进</h2><ol><li>整个好看点的界面</li><li>有人跟我换友链吗？</li></ol><h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ol><li><a href="https://www.playpi.org/2017050701.html" target="_blank" rel="noopener">虾丸派-Hexo 框架 Next 主题添加自定义 Page</a></li><li><a href="https://www.jianshu.com/p/ef110f36650b" target="_blank" rel="noopener">北辰-Hexo NexT主题自定义友链页面</a></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;由于自己最近做了各种杂七杂八的网站，有时自己想访问都忘记网址，所以想汇总一下，放到博客主页。&lt;/p&gt;
+&lt;p&gt;放到友链处显然不太合适，考虑新建一个Page.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://rogn.top/links/&quot;&gt;查看效果&lt;/a&gt;&lt;/p&gt;
+&lt;h2 i
+      
+    
+    </summary>
+    
+    
+      <category term="技术" scheme="https://rogn.top/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+      <category term="杂项" scheme="https://rogn.top/tags/%E6%9D%82%E9%A1%B9/"/>
+    
+  </entry>
   
   <entry>
     <title>使用腾讯SCF+onedrive免费搭建5T个人网盘</title>
