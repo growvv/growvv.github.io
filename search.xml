@@ -6,6 +6,8 @@
     <content><![CDATA[<p>由于自己最近做了各种杂七杂八的网站，有时自己想访问都忘记网址，所以想汇总一下，放到博客主页。</p>
 <p>放到友链处显然不太合适，考虑新建一个Page.</p>
 <p><a href="https://rogn.top/links/">查看效果</a></p>
+<a id="more"></a>
+
 <h2 id="一、步骤"><a href="#一、步骤" class="headerlink" title="一、步骤"></a>一、步骤</h2><h3 id="1-新增links"><a href="#1-新增links" class="headerlink" title="1.新增links"></a>1.新增links</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new page links</span><br></pre></td></tr></table></figure>
 
 <p>也可在<code>source</code>目录下手动创建<code>links</code>目录（还需要手动创建<code>index.md</code>文件）</p>
