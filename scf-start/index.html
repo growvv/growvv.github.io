@@ -49,15 +49,15 @@
   };
 </script>
 
-  <meta name="description" content="首先，安装VScode插件-Tencent Serverless Toolkit for VS Code，使用该插件可以轻松地编辑、调试、上传。 1. 配置插件单击左侧的腾讯云图标，根据提示输入账号的 APPID，SecretId 及 SecretKey 信息。为提升函数上传效率，您可以在 VS Code 的Setting中开启 COS 上传 。（但在部署频次、部署包很大时，可能会产生 COS 计">
+  <meta name="description" content="首先，安装VScode插件-Tencent Serverless Toolkit for VS Code，使用该插件可以轻松地编辑、调试、上传。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="scf_star如何在VS Code中开发SCF">
+<meta property="og:title" content="如何在VS Code中开发SCF">
 <meta property="og:url" content="https://rogn.top/scf-start/index.html">
 <meta property="og:site_name" content="Rogn&#96;s Blog">
-<meta property="og:description" content="首先，安装VScode插件-Tencent Serverless Toolkit for VS Code，使用该插件可以轻松地编辑、调试、上传。 1. 配置插件单击左侧的腾讯云图标，根据提示输入账号的 APPID，SecretId 及 SecretKey 信息。为提升函数上传效率，您可以在 VS Code 的Setting中开启 COS 上传 。（但在部署频次、部署包很大时，可能会产生 COS 计">
+<meta property="og:description" content="首先，安装VScode插件-Tencent Serverless Toolkit for VS Code，使用该插件可以轻松地编辑、调试、上传。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-02-25T03:10:11.000Z">
-<meta property="article:modified_time" content="2020-02-25T03:38:27.434Z">
+<meta property="article:modified_time" content="2020-02-25T03:44:08.108Z">
 <meta property="article:author" content="刘大小">
 <meta name="twitter:card" content="summary">
 
@@ -73,7 +73,7 @@
   };
 </script>
 
-  <title>scf_star如何在VS Code中开发SCF | Rogn`s Blog</title>
+  <title>如何在VS Code中开发SCF | Rogn`s Blog</title>
   
 
 
@@ -227,7 +227,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          scf_star如何在VS Code中开发SCF
+          如何在VS Code中开发SCF
         </h2>
 
         <div class="post-meta">
@@ -238,11 +238,11 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-02-25 11:10:11 / 修改时间：11:38:27" itemprop="dateCreated datePublished" datetime="2020-02-25T11:10:11+08:00">2020-02-25</time>
+              <time title="创建时间：2020-02-25 11:10:11 / 修改时间：11:44:08" itemprop="dateCreated datePublished" datetime="2020-02-25T11:10:11+08:00">2020-02-25</time>
             </span>
 
           
-            <span id="/scf-start/" class="post-meta-item leancloud_visitors" data-flag-title="scf_star如何在VS Code中开发SCF" title="阅读次数">
+            <span id="/scf-start/" class="post-meta-item leancloud_visitors" data-flag-title="如何在VS Code中开发SCF" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -274,6 +274,8 @@
 
       
         <p>首先，安装VScode插件-Tencent Serverless Toolkit for VS Code，使用该插件可以轻松地编辑、调试、上传。</p>
+<a id="more"></a>
+
 <h2 id="1-配置插件"><a href="#1-配置插件" class="headerlink" title="1. 配置插件"></a>1. 配置插件</h2><p>单击左侧的<code>腾讯云图标</code>，根据提示输入账号的 APPID，SecretId 及 SecretKey 信息。<br>为提升函数上传效率，您可以在 VS Code 的Setting中开启 COS 上传 。（但在部署频次、部署包很大时，可能会产生 COS 计费。）</p>
 <h2 id="2-创建函数"><a href="#2-创建函数" class="headerlink" title="2. 创建函数"></a>2. 创建函数</h2><p>单击本地函数上的<code>加法符号</code>初始化项目，函数创建成功后，会跳转到工作区打开函数的入口文件。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf8 -*-</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main_handler</span><span class="params">(event, context)</span>:</span></span><br><span class="line">    print(str(event))</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"hello world"</span></span><br></pre></td></tr></table></figure>
@@ -284,7 +286,7 @@
 
 <p> 进入 Tencent Serverless 插件，单击击本地函数列表目标函数上的<code>上传图标</code>。</p>
 <ul>
-<li>可以在控制台输出信息中找到url访问</li>
+<li>可以在控制台输出信息中找到url访问，例如<a href="https://service-l9rrldn2-1300738167.gz.apigw.tencentcs.com/release/hello_world" target="_blank" rel="noopener">https://service-l9rrldn2-1300738167.gz.apigw.tencentcs.com/release/hello_world</a></li>
 <li>可以将输出信息中的service id加到yaml文件中，之后部署就不会再创建新的 API 网关</li>
 </ul>
 <h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ol>
@@ -305,7 +307,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://rogn.top/scf-start/" title="scf_star如何在VS Code中开发SCF">https://rogn.top/scf-start/</a>
+    <a href="https://rogn.top/scf-start/" title="如何在VS Code中开发SCF">https://rogn.top/scf-start/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！

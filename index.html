@@ -226,7 +226,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/scf-start/" class="post-title-link" itemprop="url">scf_star如何在VS Code中开发SCF</a>
+            <a href="/scf-start/" class="post-title-link" itemprop="url">如何在VS Code中开发SCF</a>
         </h2>
 
         <div class="post-meta">
@@ -237,11 +237,11 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-02-25 11:10:11 / 修改时间：11:38:27" itemprop="dateCreated datePublished" datetime="2020-02-25T11:10:11+08:00">2020-02-25</time>
+              <time title="创建时间：2020-02-25 11:10:11 / 修改时间：11:44:08" itemprop="dateCreated datePublished" datetime="2020-02-25T11:10:11+08:00">2020-02-25</time>
             </span>
 
           
-            <span id="/scf-start/" class="post-meta-item leancloud_visitors" data-flag-title="scf_star如何在VS Code中开发SCF" title="阅读次数">
+            <span id="/scf-start/" class="post-meta-item leancloud_visitors" data-flag-title="如何在VS Code中开发SCF" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -273,23 +273,14 @@
 
       
           <p>首先，安装VScode插件-Tencent Serverless Toolkit for VS Code，使用该插件可以轻松地编辑、调试、上传。</p>
-<h2 id="1-配置插件"><a href="#1-配置插件" class="headerlink" title="1. 配置插件"></a>1. 配置插件</h2><p>单击左侧的<code>腾讯云图标</code>，根据提示输入账号的 APPID，SecretId 及 SecretKey 信息。<br>为提升函数上传效率，您可以在 VS Code 的Setting中开启 COS 上传 。（但在部署频次、部署包很大时，可能会产生 COS 计费。）</p>
-<h2 id="2-创建函数"><a href="#2-创建函数" class="headerlink" title="2. 创建函数"></a>2. 创建函数</h2><p>单击本地函数上的<code>加法符号</code>初始化项目，函数创建成功后，会跳转到工作区打开函数的入口文件。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf8 -*-</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main_handler</span><span class="params">(event, context)</span>:</span></span><br><span class="line">    print(str(event))</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"hello world"</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="3-本地测试"><a href="#3-本地测试" class="headerlink" title="3. 本地测试"></a>3. 本地测试</h2><p>进入 Tencent Serverless 插件，单击本地函数列表目标函数上的<code>运行符号</code>.</p>
-<h2 id="4-函数部署"><a href="#4-函数部署" class="headerlink" title="4. 函数部署"></a>4. 函数部署</h2><p>由于我们的函数是基于 API 网关触发，所以需要在模板文件里（template.yaml）添加 API 网关触发事件。<br>取消APIGW类型的注释，即</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">Resources:</span></span><br><span class="line">  <span class="attr">default:</span></span><br><span class="line">    <span class="attr">Type:</span> <span class="string">'TencentCloud::Serverless::Namespace'</span></span><br><span class="line">    <span class="attr">hello_world:</span></span><br><span class="line">      <span class="attr">Properties:</span></span><br><span class="line">        <span class="attr">CodeUri:</span> <span class="string">./</span></span><br><span class="line">        <span class="attr">Description:</span> <span class="string">This</span> <span class="string">is</span> <span class="string">a</span> <span class="string">template</span> <span class="string">function</span></span><br><span class="line">        <span class="attr">Environment:</span></span><br><span class="line">          <span class="attr">Variables:</span></span><br><span class="line">            <span class="attr">ENV_FIRST:</span> <span class="string">env1</span></span><br><span class="line">            <span class="attr">ENV_SECOND:</span> <span class="string">env2</span></span><br><span class="line">        <span class="attr">Handler:</span> <span class="string">index.main_handler</span></span><br><span class="line">        <span class="attr">MemorySize:</span> <span class="number">128</span></span><br><span class="line">        <span class="attr">Timeout:</span> <span class="number">3</span></span><br><span class="line">        <span class="comment"># Role: SCF_QCSExcuteRole</span></span><br><span class="line">        <span class="attr">Runtime:</span> <span class="string">Python3.6</span></span><br><span class="line">        <span class="comment"># VpcConfig:</span></span><br><span class="line">        <span class="comment">#   VpcId: 'vpc-qdqc5k2p'</span></span><br><span class="line">        <span class="comment">#   SubnetId: 'subnet-pad6l61i'</span></span><br><span class="line">        <span class="attr">Events:</span></span><br><span class="line">        <span class="comment">#   timer:</span></span><br><span class="line">        <span class="comment">#     Type: Timer</span></span><br><span class="line">        <span class="comment">#     Properties:</span></span><br><span class="line">        <span class="comment">#       CronExpression: '*/5 * * * *'</span></span><br><span class="line">        <span class="comment">#       Enable: True</span></span><br><span class="line">        <span class="comment">#   cli-appid.cos.ap-beijing.myqcloud.com: # full bucket name</span></span><br><span class="line">        <span class="comment">#     Type: COS</span></span><br><span class="line">        <span class="comment">#     Properties:</span></span><br><span class="line">        <span class="comment">#       Bucket: cli-appid.cos.ap-beijing.myqcloud.com</span></span><br><span class="line">        <span class="comment">#       Filter:</span></span><br><span class="line">        <span class="comment">#         Prefix: filterdir/</span></span><br><span class="line">        <span class="comment">#         Suffix: .jpg</span></span><br><span class="line">        <span class="comment">#       Events: cos:ObjectCreated:*</span></span><br><span class="line">        <span class="comment">#       Enable: True</span></span><br><span class="line">        <span class="comment">#   topic:            # topic name</span></span><br><span class="line">        <span class="comment">#     Type: CMQ</span></span><br><span class="line">        <span class="comment">#     Properties:</span></span><br><span class="line">        <span class="comment">#       Name: qname</span></span><br><span class="line">          <span class="attr">hello_world_apigw:</span>  <span class="comment"># $&#123;FunctionName&#125; + '_apigw'</span></span><br><span class="line">            <span class="attr">Type:</span> <span class="string">APIGW</span></span><br><span class="line">            <span class="attr">Properties:</span></span><br><span class="line">              <span class="attr">StageName:</span> <span class="string">release</span></span><br><span class="line">              <span class="attr">ServiceId:</span> </span><br><span class="line">              <span class="attr">HttpMethod:</span> <span class="string">ANY</span></span><br><span class="line">      <span class="attr">Type:</span> <span class="string">'TencentCloud::Serverless::Function'</span></span><br><span class="line"><span class="attr">Globals:</span></span><br><span class="line">  <span class="attr">Function:</span></span><br><span class="line">    <span class="attr">Timeout:</span> <span class="number">10</span></span><br></pre></td></tr></table></figure>
-
-<p> 进入 Tencent Serverless 插件，单击击本地函数列表目标函数上的<code>上传图标</code>。</p>
-<ul>
-<li>可以在控制台输出信息中找到url访问</li>
-<li>可以将输出信息中的service id加到yaml文件中，之后部署就不会再创建新的 API 网关</li>
-</ul>
-<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ol>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=tencentcloud.tencent-cloud-vscode-toolkit" target="_blank" rel="noopener">Tencent Serverless Toolkit for VS Code插件官方文档</a></li>
-</ol>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/scf-start/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
