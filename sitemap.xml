@@ -2,9 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://rogn.top/Node-Koa2-Mysql-Blog/</loc>
+    
+    <lastmod>2020-02-25T08:36:33.331Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://rogn.top/links/index.html</loc>
+    
+    <lastmod>2020-02-25T08:29:55.201Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://rogn.top/scf-start/</loc>
     
-    <lastmod>2020-02-25T03:44:08.108Z</lastmod>
+    <lastmod>2020-02-25T03:48:59.295Z</lastmod>
     
   </url>
   
@@ -12,13 +26,6 @@
     <loc>https://rogn.top/blog-interesting/</loc>
     
     <lastmod>2020-02-11T09:01:43.246Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://rogn.top/links/index.html</loc>
-    
-    <lastmod>2020-02-11T04:28:09.179Z</lastmod>
     
   </url>
   

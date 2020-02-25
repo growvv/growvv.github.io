@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="n9TsEIWkcE-HKt_yBnB6b3zIYjP0vw9l6YRbN2ID5sI">
+  <meta name="baidu-site-verification" content="zAMvebzPtS">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://rogn.top').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: true,
+    pangu: false,
+    comments: {"style":"tabs","active":"valine","storage":true,"lazyload":true,"nav":null,"activeClass":"valine"},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="目录结构  config 存放默认文件 lib 存放操作数据库文件 controller 逻辑控制文件 middlewares 存放判断登录与否文件 public 存放样式和头像文件 routes 存放路由文件 views 存放模板文件 index 程序主文件 package.json 包括项目名、作者、依赖等等">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Node+Koa2+Mysql 搭建简易博客">
+<meta property="og:url" content="https://rogn.top/Node-Koa2-Mysql-Blog/index.html">
+<meta property="og:site_name" content="Rogn&#96;s Blog">
+<meta property="og:description" content="目录结构  config 存放默认文件 lib 存放操作数据库文件 controller 逻辑控制文件 middlewares 存放判断登录与否文件 public 存放样式和头像文件 routes 存放路由文件 views 存放模板文件 index 程序主文件 package.json 包括项目名、作者、依赖等等">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/growvv/image-bed/images/20200225123416.png">
+<meta property="article:published_time" content="2020-02-25T04:30:43.000Z">
+<meta property="article:modified_time" content="2020-02-25T08:36:33.331Z">
+<meta property="article:author" content="刘大小">
+<meta property="article:tag" content="nodejs">
+<meta property="article:tag" content="Koa2">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/growvv/image-bed/images/20200225123416.png">
+
+<link rel="canonical" href="https://rogn.top/Node-Koa2-Mysql-Blog/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Node+Koa2+Mysql 搭建简易博客 | Rogn`s Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+  <script src="//instant.page/3.0.0" type="module" defer integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+<link rel="alternate" href="/atom.xml" title="Rogn`s Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <!-- <div class="headband"></div> -->
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Rogn`s Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-fw fa-link"></i>链接</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://rogn.top/Node-Koa2-Mysql-Blog/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/growvv/img/images/20200120155454.jpg">
+      <meta itemprop="name" content="刘大小">
+      <meta itemprop="description" content="越努力越幸运">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rogn`s Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          Node+Koa2+Mysql 搭建简易博客
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-02-25 12:30:43 / 修改时间：16:36:33" itemprop="dateCreated datePublished" datetime="2020-02-25T12:30:43+08:00">2020-02-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/Node-Koa2-Mysql-Blog/" class="post-meta-item leancloud_visitors" data-flag-title="Node+Koa2+Mysql 搭建简易博客" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/Node-Koa2-Mysql-Blog/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/Node-Koa2-Mysql-Blog/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><p><img data-src="https://cdn.jsdelivr.net/gh/growvv/image-bed/images/20200225123416.png" alt="目录结构"></p>
+<ul>
+<li>config 存放默认文件</li>
+<li>lib 存放操作数据库文件</li>
+<li>controller 逻辑控制文件</li>
+<li>middlewares 存放判断登录与否文件</li>
+<li>public 存放样式和头像文件</li>
+<li>routes 存放路由文件</li>
+<li>views 存放模板文件</li>
+<li>index 程序主文件</li>
+<li>package.json 包括项目名、作者、依赖等等</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="首先配置config"><a href="#首先配置config" class="headerlink" title="首先配置config"></a>首先配置config</h2><p>我们新建default.js文件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> config = &#123;</span><br><span class="line">  <span class="comment">// 启动端口</span></span><br><span class="line">  port: <span class="number">3000</span>,</span><br><span class="line">  <span class="comment">// 数据库配置</span></span><br><span class="line">  database: &#123;</span><br><span class="line">    DATABASE: <span class="string">'nodesql'</span>,</span><br><span class="line">    USERNAME: <span class="string">'root'</span>,</span><br><span class="line">    PASSWORD: <span class="string">'123456'</span>,</span><br><span class="line">    PORT: <span class="string">'3306'</span>,</span><br><span class="line">    HOST: <span class="string">'localhost'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = config</span><br></pre></td></tr></table></figure>
+
+<p>这是我们所需的一些字段，包括端口和数据库连接所需，最后我们把它exports暴露出去，以便可以在别的地方使用</p>
+<h2 id="配置index-js文件"><a href="#配置index-js文件" class="headerlink" title="配置index.js文件"></a>配置index.js文件</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Koa=<span class="built_in">require</span>(<span class="string">'koa'</span>);</span><br><span class="line"><span class="keyword">const</span> path=<span class="built_in">require</span>(<span class="string">'path'</span>)</span><br><span class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">'koa-bodyparser'</span>);</span><br><span class="line"><span class="keyword">const</span> ejs=<span class="built_in">require</span>(<span class="string">'ejs'</span>);</span><br><span class="line"><span class="keyword">const</span> session = <span class="built_in">require</span>(<span class="string">'koa-session-minimal'</span>);</span><br><span class="line"><span class="keyword">const</span> MysqlStore = <span class="built_in">require</span>(<span class="string">'koa-mysql-session'</span>);</span><br><span class="line"><span class="keyword">const</span> config = <span class="built_in">require</span>(<span class="string">'./config/default.js'</span>);</span><br><span class="line"><span class="keyword">const</span> router=<span class="built_in">require</span>(<span class="string">'koa-router'</span>)</span><br><span class="line"><span class="keyword">const</span> views = <span class="built_in">require</span>(<span class="string">'koa-views'</span>)</span><br><span class="line"><span class="comment">// const koaStatic = require('koa-static')</span></span><br><span class="line"><span class="keyword">const</span> staticCache = <span class="built_in">require</span>(<span class="string">'koa-static-cache'</span>)</span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> Koa()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// session存储配置</span></span><br><span class="line"><span class="keyword">const</span> sessionMysqlConfig= &#123;</span><br><span class="line">  user: config.database.USERNAME,</span><br><span class="line">  password: config.database.PASSWORD,</span><br><span class="line">  database: config.database.DATABASE,</span><br><span class="line">  host: config.database.HOST,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 配置session中间件</span></span><br><span class="line">app.use(session(&#123;</span><br><span class="line">  key: <span class="string">'USER_SID'</span>,</span><br><span class="line">  store: <span class="keyword">new</span> MysqlStore(sessionMysqlConfig)</span><br><span class="line">&#125;))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 配置静态资源加载中间件</span></span><br><span class="line"><span class="comment">// app.use(koaStatic(</span></span><br><span class="line"><span class="comment">//   path.join(__dirname , './public')</span></span><br><span class="line"><span class="comment">// ))</span></span><br><span class="line"><span class="comment">// 缓存</span></span><br><span class="line">app.use(staticCache(path.join(__dirname, <span class="string">'./public'</span>), &#123; <span class="attr">dynamic</span>: <span class="literal">true</span> &#125;, &#123;</span><br><span class="line">  maxAge: <span class="number">365</span> * <span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span></span><br><span class="line">&#125;))</span><br><span class="line">app.use(staticCache(path.join(__dirname, <span class="string">'./images'</span>), &#123; <span class="attr">dynamic</span>: <span class="literal">true</span> &#125;, &#123;</span><br><span class="line">  maxAge: <span class="number">365</span> * <span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span></span><br><span class="line">&#125;))</span><br><span class="line"></span><br><span class="line"><span class="comment">// 配置服务端模板渲染引擎中间件</span></span><br><span class="line">app.use(views(path.join(__dirname, <span class="string">'./views'</span>), &#123;</span><br><span class="line">  extension: <span class="string">'ejs'</span></span><br><span class="line">&#125;))</span><br><span class="line">app.use(bodyParser(&#123;</span><br><span class="line">  formLimit: <span class="string">'1mb'</span></span><br><span class="line">&#125;))</span><br><span class="line"></span><br><span class="line"><span class="comment">//  路由(我们先注释三个，等后面添加好了再取消注释，因为我们还没有定义路由，稍后会先实现注册)</span></span><br><span class="line"><span class="comment">//app.use(require('./routers/signin.js').routes())</span></span><br><span class="line">app.use(<span class="built_in">require</span>(<span class="string">'./routers/signup.js'</span>).routes())</span><br><span class="line"><span class="comment">//app.use(require('./routers/posts.js').routes())</span></span><br><span class="line"><span class="comment">//app.use(require('./routers/signout.js').routes())</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app.listen(<span class="number">3000</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">`listening on port <span class="subst">$&#123;config.port&#125;</span>`</span>)</span><br></pre></td></tr></table></figure>
+
+<p>我们使用<code>koa-mysql-session</code>来进行数据库的操作， 使用<code>koa-static</code>配置静态资源，目录设置为<code>public</code>，使用<code>ejs</code>模板引擎，使用<code>koa-bodyparser</code>来解析提交的表单信息，使用<code>koa-router</code>做路由，使用<code>koa-static-cache</code>来缓存文件.</p>
+<p>之前我们配置了default.js，我们就可以在这里使用了。</p>
+<h2 id="配置lib的mysql-js文件"><a href="#配置lib的mysql-js文件" class="headerlink" title="配置lib的mysql.js文件"></a>配置lib的mysql.js文件</h2><p>首先我们建立了数据库的连接池，以便后面的操作都可以使用到。</p>
+<p>我们创建了一个函数query，通过返回promise的方式以便可以方便用.then()来获取数据库返回的数据。</p>
+<p>然后我们定义了三个表的字段，通过createTable来创建我们后面所需的三个表，包括posts(存储文章)，users(存储用户)，comment(存储评论)，create table if not exists users()表示如果users表不存在则创建该表，避免每次重复建表报错的情况。</p>
+<p>后面我们定义了一系列的方法，最后把他们exports暴露出去。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> mysql = <span class="built_in">require</span>(<span class="string">'mysql'</span>);</span><br><span class="line"><span class="keyword">var</span> config = <span class="built_in">require</span>(<span class="string">'../config/default.js'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> pool  = mysql.createPool(&#123;</span><br><span class="line">  host     : config.database.HOST,</span><br><span class="line">  user     : config.database.USERNAME,</span><br><span class="line">  password : config.database.PASSWORD,</span><br><span class="line">  database : config.database.DATABASE</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> query = <span class="function"><span class="keyword">function</span>(<span class="params"> sql, values </span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params"> resolve, reject </span>) =&gt;</span> &#123;</span><br><span class="line">    pool.getConnection(<span class="function"><span class="keyword">function</span>(<span class="params">err, connection</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (err) &#123;</span><br><span class="line">        reject( err )</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        connection.query(sql, values, ( err, rows) =&gt; &#123;</span><br><span class="line"></span><br><span class="line">          <span class="keyword">if</span> ( err ) &#123;</span><br><span class="line">            reject( err )</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            resolve( rows )</span><br><span class="line">          &#125;</span><br><span class="line">          connection.release()</span><br><span class="line">        &#125;)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// let query = function( sql, values ) &#123;</span></span><br><span class="line"><span class="comment">// pool.getConnection(function(err, connection) &#123;</span></span><br><span class="line"><span class="comment">//   // 使用连接</span></span><br><span class="line"><span class="comment">//   connection.query( sql,values, function(err, rows) &#123;</span></span><br><span class="line"><span class="comment">//     // 使用连接执行查询</span></span><br><span class="line"><span class="comment">//     console.log(rows)</span></span><br><span class="line"><span class="comment">//     connection.release();</span></span><br><span class="line"><span class="comment">//     //连接不再使用，返回到连接池</span></span><br><span class="line"><span class="comment">//   &#125;);</span></span><br><span class="line"><span class="comment">// &#125;);</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> users =</span><br><span class="line">    <span class="string">`create table if not exists users(</span></span><br><span class="line"><span class="string">     id INT NOT NULL AUTO_INCREMENT,</span></span><br><span class="line"><span class="string">     name VARCHAR(100) NOT NULL,</span></span><br><span class="line"><span class="string">     pass VARCHAR(100) NOT NULL,</span></span><br><span class="line"><span class="string">     avator VARCHAR(100) NOT NULL,</span></span><br><span class="line"><span class="string">     moment VARCHAR(100) NOT NULL,</span></span><br><span class="line"><span class="string">     PRIMARY KEY ( id )</span></span><br><span class="line"><span class="string">    );`</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> posts =</span><br><span class="line">    <span class="string">`create table if not exists posts(</span></span><br><span class="line"><span class="string">     id INT NOT NULL AUTO_INCREMENT,</span></span><br><span class="line"><span class="string">     name VARCHAR(100) NOT NULL,</span></span><br><span class="line"><span class="string">     title TEXT(0) NOT NULL,</span></span><br><span class="line"><span class="string">     content TEXT(0) NOT NULL,</span></span><br><span class="line"><span class="string">     md TEXT(0) NOT NULL,</span></span><br><span class="line"><span class="string">     uid VARCHAR(40) NOT NULL,</span></span><br><span class="line"><span class="string">     moment VARCHAR(100) NOT NULL,</span></span><br><span class="line"><span class="string">     comments VARCHAR(200) NOT NULL DEFAULT '0',</span></span><br><span class="line"><span class="string">     pv VARCHAR(40) NOT NULL DEFAULT '0',</span></span><br><span class="line"><span class="string">     avator VARCHAR(100) NOT NULL,</span></span><br><span class="line"><span class="string">     PRIMARY KEY ( id )</span></span><br><span class="line"><span class="string">    );`</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> comment =</span><br><span class="line">    <span class="string">`create table if not exists comment(</span></span><br><span class="line"><span class="string">     id INT NOT NULL AUTO_INCREMENT,</span></span><br><span class="line"><span class="string">     name VARCHAR(100) NOT NULL,</span></span><br><span class="line"><span class="string">     content TEXT(0) NOT NULL,</span></span><br><span class="line"><span class="string">     moment VARCHAR(40) NOT NULL,</span></span><br><span class="line"><span class="string">     postid VARCHAR(40) NOT NULL,</span></span><br><span class="line"><span class="string">     avator VARCHAR(100) NOT NULL,</span></span><br><span class="line"><span class="string">     PRIMARY KEY ( id )</span></span><br><span class="line"><span class="string">    );`</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> createTable = <span class="function"><span class="keyword">function</span>(<span class="params"> sql </span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> query( sql, [] )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 建表</span></span><br><span class="line">createTable(users)</span><br><span class="line">createTable(posts)</span><br><span class="line">createTable(comment)</span><br><span class="line"><span class="comment">// 注册用户</span></span><br><span class="line"><span class="keyword">let</span> insertData = <span class="function"><span class="keyword">function</span>(<span class="params"> value </span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> _sql = <span class="string">"insert into users set name=?,pass=?,avator=?,moment=?;"</span></span><br><span class="line">  <span class="keyword">return</span> query( _sql, value )</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 删除用户</span></span><br><span class="line"><span class="keyword">let</span> deleteUserData = <span class="function"><span class="keyword">function</span>(<span class="params"> name </span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> _sql = <span class="string">`delete from users where name="<span class="subst">$&#123;name&#125;</span>";`</span></span><br><span class="line">  <span class="keyword">return</span> query( _sql )</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 查找用户</span></span><br><span class="line"><span class="keyword">let</span> findUserData = <span class="function"><span class="keyword">function</span>(<span class="params"> name </span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> _sql = <span class="string">`select * from users where name="<span class="subst">$&#123;name&#125;</span>";`</span></span><br><span class="line">  <span class="keyword">return</span> query( _sql )</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 发表文章</span></span><br><span class="line"><span class="keyword">let</span> insertPost = <span class="function"><span class="keyword">function</span>(<span class="params"> value </span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> _sql = <span class="string">"insert into posts set name=?,title=?,content=?,md=?,uid=?,moment=?,avator=?;"</span></span><br><span class="line">  <span class="keyword">return</span> query( _sql, value )</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 更新文章评论数</span></span><br><span class="line"><span class="keyword">let</span> updatePostComment = <span class="function"><span class="keyword">function</span>(<span class="params"> value </span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> _sql = <span class="string">"update posts set comments=? where id=?"</span></span><br><span class="line">  <span class="keyword">return</span> query( _sql, value )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 更新浏览数</span></span><br><span class="line"><span class="keyword">let</span> updatePostPv = <span class="function"><span class="keyword">function</span>(<span class="params"> value </span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> _sql = <span class="string">"update posts set pv=? where id=?"</span></span><br><span class="line">  <span class="keyword">return</span> query( _sql, value )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发表评论</span></span><br><span class="line"><span class="keyword">let</span> insertComment = <span class="function"><span class="keyword">function</span>(<span class="params"> value </span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> _sql = <span class="string">"insert into comment set name=?,content=?,moment=?,postid=?,avator=?;"</span></span><br><span class="line">  <span class="keyword">return</span> query( _sql, value )</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 通过名字查找用户</span></span><br><span class="line"><span class="keyword">let</span> findDataByName = <span class="function"><span class="keyword">function</span> (<span class="params"> name </span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> _sql = <span class="string">`select * from users where name="<span class="subst">$&#123;name&#125;</span>";`</span></span><br><span class="line">  <span class="keyword">return</span> query( _sql)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 通过文章的名字查找用户</span></span><br><span class="line"><span class="keyword">let</span> findDataByUser = <span class="function"><span class="keyword">function</span> (<span class="params"> name </span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> _sql = <span class="string">`select * from posts where name="<span class="subst">$&#123;name&#125;</span>";`</span></span><br><span class="line">  <span class="keyword">return</span> query( _sql)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 通过文章id查找</span></span><br><span class="line"><span class="keyword">let</span> findDataById = <span class="function"><span class="keyword">function</span> (<span class="params"> id </span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> _sql = <span class="string">`select * from posts where id="<span class="subst">$&#123;id&#125;</span>";`</span></span><br><span class="line">  <span class="keyword">return</span> query( _sql)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 通过评论id查找</span></span><br><span class="line"><span class="keyword">let</span> findCommentById = <span class="function"><span class="keyword">function</span> (<span class="params"> id </span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> _sql = <span class="string">`select * FROM comment where postid="<span class="subst">$&#123;id&#125;</span>";`</span></span><br><span class="line">  <span class="keyword">return</span> query( _sql)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 查询所有文章</span></span><br><span class="line"><span class="keyword">let</span> findAllPost = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> _sql = <span class="string">` select * FROM posts;`</span></span><br><span class="line">  <span class="keyword">return</span> query( _sql)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 查询分页文章</span></span><br><span class="line"><span class="keyword">let</span> findPostByPage = <span class="function"><span class="keyword">function</span> (<span class="params">page</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> _sql = <span class="string">` select * FROM posts limit <span class="subst">$&#123;(page<span class="number">-1</span>)*<span class="number">10</span>&#125;</span>,10;`</span></span><br><span class="line">  <span class="keyword">return</span> query( _sql)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 查询个人分页文章</span></span><br><span class="line"><span class="keyword">let</span> findPostByUserPage = <span class="function"><span class="keyword">function</span> (<span class="params">name,page</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> _sql = <span class="string">` select * FROM posts where name="<span class="subst">$&#123;name&#125;</span>" order by id desc limit <span class="subst">$&#123;(page<span class="number">-1</span>)*<span class="number">10</span>&#125;</span>,10 ;`</span></span><br><span class="line">  <span class="keyword">return</span> query( _sql)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 更新修改文章</span></span><br><span class="line"><span class="keyword">let</span> updatePost = <span class="function"><span class="keyword">function</span>(<span class="params">values</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">let</span> _sql = <span class="string">`update posts set  title=?,content=?,md=? where id=?`</span></span><br><span class="line">  <span class="keyword">return</span> query(_sql,values)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 删除文章</span></span><br><span class="line"><span class="keyword">let</span> deletePost = <span class="function"><span class="keyword">function</span>(<span class="params">id</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">let</span> _sql = <span class="string">`delete from posts where id = <span class="subst">$&#123;id&#125;</span>`</span></span><br><span class="line">  <span class="keyword">return</span> query(_sql)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 删除评论</span></span><br><span class="line"><span class="keyword">let</span> deleteComment = <span class="function"><span class="keyword">function</span>(<span class="params">id</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">let</span> _sql = <span class="string">`delete from comment where id=<span class="subst">$&#123;id&#125;</span>`</span></span><br><span class="line">  <span class="keyword">return</span> query(_sql)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 删除所有评论</span></span><br><span class="line"><span class="keyword">let</span> deleteAllPostComment = <span class="function"><span class="keyword">function</span>(<span class="params">id</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">let</span> _sql = <span class="string">`delete from comment where postid=<span class="subst">$&#123;id&#125;</span>`</span></span><br><span class="line">  <span class="keyword">return</span> query(_sql)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 查找评论数</span></span><br><span class="line"><span class="keyword">let</span> findCommentLength = <span class="function"><span class="keyword">function</span>(<span class="params">id</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">let</span> _sql = <span class="string">`select content from comment where postid in (select id from posts where id=<span class="subst">$&#123;id&#125;</span>)`</span></span><br><span class="line">  <span class="keyword">return</span> query(_sql)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 滚动无限加载数据</span></span><br><span class="line"><span class="keyword">let</span> findPageById = <span class="function"><span class="keyword">function</span>(<span class="params">page</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">let</span> _sql = <span class="string">`select * from posts limit <span class="subst">$&#123;(page<span class="number">-1</span>)*<span class="number">5</span>&#125;</span>,5;`</span></span><br><span class="line">  <span class="keyword">return</span> query(_sql)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 评论分页</span></span><br><span class="line"><span class="keyword">let</span> findCommentByPage = <span class="function"><span class="keyword">function</span>(<span class="params">page,postId</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">let</span> _sql = <span class="string">`select * from comment where postid=<span class="subst">$&#123;postId&#125;</span> order by id desc limit <span class="subst">$&#123;(page<span class="number">-1</span>)*<span class="number">10</span>&#125;</span>,10;`</span></span><br><span class="line">  <span class="keyword">return</span> query(_sql)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">	query,</span><br><span class="line">	createTable,</span><br><span class="line">	insertData,</span><br><span class="line">  	deleteUserData,</span><br><span class="line">  	findUserData,</span><br><span class="line">	findDataByName,</span><br><span class="line">  	insertPost,</span><br><span class="line">  	findAllPost,</span><br><span class="line">  	findPostByPage,</span><br><span class="line">	findPostByUserPage,</span><br><span class="line">	findDataByUser,</span><br><span class="line">	findDataById,</span><br><span class="line">	insertComment,</span><br><span class="line">	findCommentById,</span><br><span class="line">	updatePost,</span><br><span class="line">	deletePost,</span><br><span class="line">	deleteComment,</span><br><span class="line">	findCommentLength,</span><br><span class="line">	updatePostComment,</span><br><span class="line">	deleteAllPostComment,</span><br><span class="line">	updatePostPv,</span><br><span class="line">	findPageById,</span><br><span class="line">	findCommentByPage</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面是我们建的表：<br>users | posts | comment |<br> –   | –    | –      |<br>id    | id    | id      |<br>name  | name  | name    |<br>pass  | title | comtent |<br>avator|cotent |moment   |<br>moment|  md   |postid   |</p>
+<ul>
+<li>|uid    |avator   |</li>
+<li>|moment |         |</li>
+<li>|comments|        |</li>
+<li>|pv     |         |</li>
+<li>|avator |         |</li>
+</ul>
+<p>现在感觉有点枯燥，那我们先来实现一下注册吧</p>
+<h2 id="实现注册页面"><a href="#实现注册页面" class="headerlink" title="实现注册页面"></a>实现注册页面</h2><p>routers/singup.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> router = <span class="built_in">require</span>(<span class="string">'koa-router'</span>)();</span><br><span class="line"><span class="keyword">const</span> userModel = <span class="built_in">require</span>(<span class="string">'../lib/mysql.js'</span>);</span><br><span class="line"><span class="keyword">const</span> md5 = <span class="built_in">require</span>(<span class="string">'md5'</span>)</span><br><span class="line"><span class="keyword">const</span> checkNotLogin = <span class="built_in">require</span>(<span class="string">'../middlewares/check.js'</span>).checkNotLogin</span><br><span class="line"><span class="keyword">const</span> checkLogin = <span class="built_in">require</span>(<span class="string">'../middlewares/check.js'</span>).checkLogin</span><br><span class="line"><span class="keyword">const</span> moment = <span class="built_in">require</span>(<span class="string">'moment'</span>);</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>)</span><br><span class="line"><span class="comment">// 注册页面</span></span><br><span class="line">router.get(<span class="string">'/signup'</span>, <span class="keyword">async</span>(ctx, next) =&gt; &#123;</span><br><span class="line">    <span class="keyword">await</span> checkNotLogin(ctx)</span><br><span class="line">    <span class="keyword">await</span> ctx.render(<span class="string">'signup'</span>, &#123;</span><br><span class="line">        session: ctx.session,</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line">    </span><br><span class="line"><span class="built_in">module</span>.exports = router</span><br></pre></td></tr></table></figure>
+
+<p>使用get方式得到’/signup’页面，然后渲染signup模板，这里我们还没有在写signup.ejs</p>
+<p>views/signup.ejs</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>注册<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">form</span> <span class="attr">class</span>=<span class="string">"form create"</span> <span class="attr">method</span>=<span class="string">"post"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">label</span>&gt;</span>用户名：<span class="tag">&lt;/<span class="name">label</span>&gt;</span> </span><br><span class="line">				<span class="tag">&lt;<span class="name">input</span> <span class="attr">placeholder</span>=<span class="string">"请输入用户名"</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"name"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">label</span>&gt;</span>密码：<span class="tag">&lt;/<span class="name">label</span>&gt;</span> </span><br><span class="line">				<span class="tag">&lt;<span class="name">input</span> <span class="attr">placeholder</span>=<span class="string">"请输入密码"</span> <span class="attr">class</span>=<span class="string">"password"</span> <span class="attr">type</span>=<span class="string">"password"</span> <span class="attr">name</span>=<span class="string">"password"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">label</span>&gt;</span>重复密码：<span class="tag">&lt;/<span class="name">label</span>&gt;</span> </span><br><span class="line">				<span class="tag">&lt;<span class="name">input</span> <span class="attr">placeholder</span>=<span class="string">"请确认密码"</span> <span class="attr">class</span>=<span class="string">"repeatpass"</span> <span class="attr">type</span>=<span class="string">"password"</span> <span class="attr">name</span>=<span class="string">"repeatpass"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">label</span>&gt;</span>上传头像：<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">name</span>=<span class="string">"avator"</span> <span class="attr">id</span>=<span class="string">"avator"</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">id</span>=<span class="string">"avatorVal"</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">"preview"</span> <span class="attr">alt</span>=<span class="string">"预览头像"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"submit"</span>&gt;</span>注册<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们先安装supervisor</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i supervisor -g</span><br></pre></td></tr></table></figure>
+<p>supervisor的作用是会监听文件的变化，而我们修改文件之后不必去重启程序</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">supervisor --harmony index</span><br></pre></td></tr></table></figure>
+<p>现在访问 localhost:3000/signup 看看效果吧。注意数据库一定要是开启的状态，不能关闭</p>
+<h2 id="完善注册功能"><a href="#完善注册功能" class="headerlink" title="完善注册功能"></a>完善注册功能</h2><p>首先我们来完善一下样式吧，稍微美化一下<br>public/index.css</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">body</span>,</span><br><span class="line"><span class="selector-tag">header</span>,</span><br><span class="line"><span class="selector-tag">ul</span>,</span><br><span class="line"><span class="selector-tag">li</span>,</span><br><span class="line"><span class="selector-tag">p</span>,</span><br><span class="line"><span class="selector-tag">div</span>,</span><br><span class="line"><span class="selector-tag">html</span>,</span><br><span class="line"><span class="selector-tag">span</span>,</span><br><span class="line"><span class="selector-tag">h3</span>,</span><br><span class="line"><span class="selector-tag">a</span>,</span><br><span class="line"><span class="selector-tag">blockquote</span> &#123;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#333</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">    <span class="attribute">margin-bottom</span>: <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">ul</span>,<span class="selector-tag">li</span>&#123;</span><br><span class="line">    <span class="attribute">list-style-type</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">a</span> &#123;</span><br><span class="line">    <span class="attribute">text-decoration</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">header</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">60%</span>;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">20px</span> auto;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">header</span><span class="selector-pseudo">:after</span>&#123;</span><br><span class="line">    <span class="attribute">content</span>: <span class="string">''</span>;</span><br><span class="line">    <span class="attribute">clear</span>: both;</span><br><span class="line">    <span class="attribute">display</span>: table;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">header</span> <span class="selector-class">.user_right</span>&#123;</span><br><span class="line">    <span class="attribute">float</span>: right</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">header</span> <span class="selector-class">.user_right</span> <span class="selector-class">.active</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#5FB878</span>;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#fff</span>;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#5FB878</span>;</span><br><span class="line">    <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">5px</span> <span class="number">5px</span> <span class="number">#ccc</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">header</span> <span class="selector-class">.user_name</span> &#123;</span><br><span class="line">    <span class="attribute">float</span>: left</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.user_name</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.has_user</span> <span class="selector-tag">a</span>,</span><br><span class="line"><span class="selector-class">.has_user</span> <span class="selector-tag">span</span>,</span><br><span class="line"><span class="selector-class">.none_user</span> <span class="selector-tag">a</span> &#123;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">5px</span> <span class="number">15px</span>;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#5FB878</span>;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">15px</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#fff</span>;</span><br><span class="line">    <span class="attribute">cursor</span>: pointer;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#fff</span>;</span><br><span class="line">    <span class="attribute">transition</span>: all <span class="number">0.3s</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.has_user</span> <span class="selector-tag">a</span><span class="selector-pseudo">:hover</span>,<span class="selector-class">.has_user</span> <span class="selector-tag">span</span><span class="selector-pseudo">:hover</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#5FB878</span>;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#fff</span>;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#5FB878</span>;</span><br><span class="line">    <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">5px</span> <span class="number">5px</span> <span class="number">#ccc</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.posts</span>&#123;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">4px</span>; </span><br><span class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#ddd</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.posts</span> &gt; <span class="selector-tag">li</span>&#123;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">position</span>: relative;</span><br><span class="line">    <span class="attribute">padding-bottom</span>: <span class="number">40px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.posts</span> <span class="selector-class">.comment_pv</span>&#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">bottom</span>: <span class="number">5px</span>;</span><br><span class="line">    <span class="attribute">right</span>: <span class="number">10px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.posts</span> <span class="selector-class">.author</span>&#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">bottom</span>: <span class="number">5px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.posts</span> <span class="selector-class">.author</span> <span class="selector-tag">span</span>&#123;</span><br><span class="line">    <span class="attribute">margin-right</span>: <span class="number">5px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.posts</span> &gt; <span class="selector-tag">li</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#f2f2f2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.posts</span> &gt; <span class="selector-tag">li</span><span class="selector-pseudo">:hover</span> <span class="selector-tag">pre</span>&#123;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#666</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.posts</span> &gt; <span class="selector-tag">li</span><span class="selector-pseudo">:hover</span> <span class="selector-class">.content</span>&#123;</span><br><span class="line">    <span class="attribute">border-top</span>: <span class="number">1px</span> solid <span class="number">#fff</span>;</span><br><span class="line">    <span class="attribute">border-bottom</span>: <span class="number">1px</span> solid <span class="number">#fff</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.posts</span> &gt; <span class="selector-tag">li</span> + <span class="selector-tag">li</span>&#123;</span><br><span class="line">    <span class="attribute">border-top</span>: <span class="number">1px</span> solid <span class="number">#ddd</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.posts</span> <span class="selector-tag">li</span> <span class="selector-class">.title</span> <span class="selector-tag">span</span>&#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#5FB878</span>;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">14px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.posts</span> <span class="selector-tag">li</span> <span class="selector-class">.title</span>&#123;</span><br><span class="line">     <span class="attribute">margin-left</span>: <span class="number">40px</span>;</span><br><span class="line">     <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">     <span class="attribute">color</span>: <span class="number">#222</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.posts</span> <span class="selector-class">.userAvator</span>&#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">3px</span>;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">3px</span>;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">40px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">40px</span>;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">5px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.posts</span> <span class="selector-class">.content</span>&#123;</span><br><span class="line">    <span class="attribute">border-top</span>: <span class="number">1px</span> solid <span class="number">#f2f2f2</span>;</span><br><span class="line">    <span class="attribute">border-bottom</span>: <span class="number">1px</span> solid <span class="number">#f2f2f2</span>;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">10px</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> ;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">10px</span> <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">margin-left</span>: <span class="number">40px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.userMsg</span> <span class="selector-tag">img</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">40px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">40px</span>;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">5px</span>;</span><br><span class="line">    <span class="attribute">margin-right</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">vertical-align</span>: middle;</span><br><span class="line">    <span class="attribute">display</span>: inline-block;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.userMsg</span> <span class="selector-tag">span</span>&#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">18px</span>;</span><br><span class="line">    <span class="attribute">color</span>:<span class="number">#333</span>;</span><br><span class="line">    <span class="attribute">position</span>: relative;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">2px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.posts</span> <span class="selector-tag">li</span> <span class="selector-tag">img</span>&#123;</span><br><span class="line">    <span class="attribute">max-width</span>: <span class="number">100%</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.spost</span> <span class="selector-class">.comment_pv</span>&#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">10px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.spost</span> <span class="selector-class">.edit</span> &#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">right</span>: <span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">bottom</span>: <span class="number">5px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.spost</span> <span class="selector-class">.edit</span> <span class="selector-tag">p</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: inline-block;</span><br><span class="line">    <span class="attribute">margin-left</span>: <span class="number">10px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.comment_wrap</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">60%</span>;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">20px</span> auto;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.submit</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">40px</span>;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">40px</span>;</span><br><span class="line">    <span class="attribute">text-align</span>: center;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">4px</span>;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#5FB878</span>;</span><br><span class="line">    <span class="attribute">cursor</span>: pointer;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#fff</span>;</span><br><span class="line">    <span class="attribute">float</span>: left;</span><br><span class="line">    <span class="attribute">margin-top</span>: <span class="number">20px</span> ;</span><br><span class="line">    <span class="attribute">border</span>:<span class="number">1px</span> solid <span class="number">#fff</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.submit</span><span class="selector-pseudo">:hover</span>&#123;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#fff</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#5FB878</span>;</span><br><span class="line">    <span class="attribute">border</span>:<span class="number">1px</span> solid <span class="number">#5FB878</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.comment_list</span>&#123;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#ddd</span>;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">4px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.cmt_lists</span><span class="selector-pseudo">:hover</span>&#123;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#f2f2f2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.cmt_lists</span> + <span class="selector-class">.cmt_lists</span>&#123;</span><br><span class="line">    <span class="attribute">border-top</span>: <span class="number">1px</span> solid <span class="number">#ddd</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.cmt_content</span> &#123;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">position</span>: relative;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">4px</span>;</span><br><span class="line">    <span class="attribute">word-break</span>: break-all;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.cmt_detail</span>&#123;</span><br><span class="line">    <span class="attribute">margin-left</span>: <span class="number">48px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.cmt_content</span> <span class="selector-tag">img</span>&#123;</span><br><span class="line">    <span class="attribute">max-width</span>: <span class="number">100%</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* .cmt_content:after &#123;</span></span><br><span class="line"><span class="comment">    content: '#content';</span></span><br><span class="line"><span class="comment">    position: absolute;</span></span><br><span class="line"><span class="comment">    top: 5px;</span></span><br><span class="line"><span class="comment">    right: 5px;</span></span><br><span class="line"><span class="comment">    color: #aaa;</span></span><br><span class="line"><span class="comment">    font-size: 13px;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="selector-class">.cmt_name</span> &#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">right</span>: <span class="number">8px</span>;</span><br><span class="line">    <span class="attribute">bottom</span>: <span class="number">5px</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#333</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.cmt_name</span> <span class="selector-tag">a</span> &#123;</span><br><span class="line">    <span class="attribute">margin-left</span>: <span class="number">5px</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#1E9FFF</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.cmt_time</span>&#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">12px</span>;</span><br><span class="line">    <span class="attribute">right</span>: <span class="number">5px</span>;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">5px</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#aaa</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.form</span> &#123;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">0</span> auto;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">50%</span>;</span><br><span class="line">    <span class="attribute">margin-top</span>: <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">textarea</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">150px</span>;</span><br><span class="line">    <span class="attribute">padding</span>:<span class="number">10px</span> <span class="number">0</span> <span class="number">0</span> <span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">4px</span>;   </span><br><span class="line">	<span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#d7dde4</span>;</span><br><span class="line">    <span class="attribute">-webkit-appearance</span>: none;</span><br><span class="line">    <span class="attribute">resize</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">textarea</span><span class="selector-id">#spContent</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">98%</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.tips</span> &#123;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">20px</span> <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#ec5051</span>;</span><br><span class="line">    <span class="attribute">text-align</span>: center;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">60%</span>;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">0</span> auto;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.form</span> <span class="selector-tag">img</span><span class="selector-class">.preview</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>:<span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">height</span>:<span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">50%</span>;</span><br><span class="line">    <span class="attribute">display</span>: none;</span><br><span class="line">    <span class="attribute">margin-top</span>:<span class="number">10px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">input</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">35px</span>;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">18px</span>;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">6px</span> <span class="number">7px</span>;	</span><br><span class="line">	<span class="attribute">border-radius</span>: <span class="number">4px</span>;   </span><br><span class="line">	<span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#d7dde4</span>;</span><br><span class="line">	<span class="attribute">-webkit-appearance</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">input</span><span class="selector-pseudo">:focus</span>,<span class="selector-tag">textarea</span><span class="selector-pseudo">:focus</span>&#123;</span><br><span class="line">    <span class="attribute">outline</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">2px</span> <span class="built_in">rgba</span>(<span class="number">51</span>,<span class="number">153</span>,<span class="number">255</span>,.<span class="number">2</span>);</span><br><span class="line">    <span class="attribute">border-color</span>: <span class="number">#5cadff</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">input</span><span class="selector-pseudo">:hover</span>,<span class="selector-tag">input</span><span class="selector-pseudo">:active</span>,<span class="selector-tag">textarea</span><span class="selector-pseudo">:hover</span>,<span class="selector-tag">textarea</span><span class="selector-pseudo">:active</span>&#123;</span><br><span class="line">    <span class="attribute">border-color</span>: <span class="number">#5cadff</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.create</span> <span class="selector-tag">label</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">10px</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.comment_wrap</span> <span class="selector-tag">form</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">margin-bottom</span>: <span class="number">85px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.delete_comment</span>,</span><br><span class="line"><span class="selector-class">.delete_post</span> &#123;</span><br><span class="line">    <span class="attribute">cursor</span>: pointer;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.delete_comment</span><span class="selector-pseudo">:hover</span>,</span><br><span class="line"><span class="selector-class">.delete_post</span><span class="selector-pseudo">:hover</span>,</span><br><span class="line"><span class="selector-tag">a</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#ec5051</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.disabled</span>&#123;</span><br><span class="line">    <span class="attribute">user-select</span>: none;</span><br><span class="line">    <span class="attribute">cursor</span>: not-allowed <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.error</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#ec5051</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.success</span>&#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#1E9FFF</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.container</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">60%</span>;</span><br><span class="line">    <span class="attribute">margin</span>:<span class="number">0</span> auto;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.message</span>&#123;</span><br><span class="line">    <span class="attribute">position</span>: fixed;</span><br><span class="line">    <span class="attribute">top</span>: -<span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">50%</span>;</span><br><span class="line">    <span class="attribute">transform</span>: <span class="built_in">translateX</span>(-<span class="number">50%</span>);</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">10px</span> <span class="number">20px</span>;</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.7</span>);</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#fff</span>;</span><br><span class="line">    <span class="attribute">border-bottom-left-radius</span>: <span class="number">15px</span>;</span><br><span class="line">    <span class="attribute">border-bottom-right-radius</span>: <span class="number">15px</span>;</span><br><span class="line">    <span class="attribute">z-index</span>: <span class="number">99999</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.markdown</span> <span class="selector-tag">pre</span>&#123;</span><br><span class="line">    <span class="attribute">display</span>: block;</span><br><span class="line">    <span class="attribute">overflow-x</span>: auto;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">0.5em</span>;</span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#F0F0F0</span>;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">3px</span>;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#fff</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.markdown</span> <span class="selector-tag">blockquote</span>&#123;</span><br><span class="line">    <span class="attribute">padding</span>: <span class="number">0</span> <span class="number">1em</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#6a737d</span>;</span><br><span class="line">    <span class="attribute">border-left</span>: <span class="number">0.25em</span> solid <span class="number">#dfe2e5</span>;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">10px</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.markdown</span> <span class="selector-tag">ul</span> <span class="selector-tag">li</span>&#123;</span><br><span class="line">    <span class="attribute">list-style</span>: circle;</span><br><span class="line">    <span class="attribute">margin-top</span>: <span class="number">5px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们再把模板引擎的header和footer独立出来</p>
+<p>/views/header.ejs<br>顺便引入index.css和jq</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>koa2-blog<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"icon"</span> <span class="attr">href</span>=<span class="string">"http://www.wclimb.site/images/avatar.png"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"/index.css"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"http://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="actionscript">		<span class="function"><span class="keyword">function</span> <span class="title">fade</span><span class="params">(txt)</span></span>&#123;</span></span><br><span class="line"><span class="javascript">			$(<span class="string">'.message'</span>).text(txt)</span></span><br><span class="line"><span class="javascript">			$(<span class="string">'.message'</span>).animate(&#123;</span></span><br><span class="line">				top:0</span><br><span class="line">			&#125;)</span><br><span class="line"><span class="actionscript">			setTimeout(<span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;</span></span><br><span class="line"><span class="javascript">				$(<span class="string">'.message'</span>).animate(&#123;</span></span><br><span class="line"><span class="actionscript">					top: <span class="string">'-100%'</span></span></span><br><span class="line">				&#125;)</span><br><span class="line">			&#125;,1500)</span><br><span class="line">		&#125;</span><br><span class="line"><span class="javascript">		$(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">			$(<span class="string">'.signout'</span>).click(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span></span><br><span class="line"><span class="javascript">				$.ajax(&#123;</span></span><br><span class="line"><span class="actionscript">					url: <span class="string">"/signout"</span>,</span></span><br><span class="line"><span class="actionscript">					type: <span class="string">"GET"</span>,</span></span><br><span class="line"><span class="actionscript">					cache: <span class="literal">false</span>,</span></span><br><span class="line"><span class="actionscript">					dataType: <span class="string">'json'</span>,</span></span><br><span class="line"><span class="actionscript">					success: <span class="function"><span class="keyword">function</span> <span class="params">(msg)</span> </span>&#123;</span></span><br><span class="line">						if (msg) &#123;</span><br><span class="line"><span class="actionscript">							fade(<span class="string">'登出成功'</span>)</span></span><br><span class="line"><span class="javascript">							setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span></span><br><span class="line"><span class="javascript">								<span class="built_in">window</span>.location.href = <span class="string">"/posts"</span></span></span><br><span class="line">							&#125;,1500)	</span><br><span class="line">						&#125;</span><br><span class="line">					&#125;,</span><br><span class="line"><span class="actionscript">					error: <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</span></span><br><span class="line"><span class="actionscript">						alert(<span class="string">'异常'</span>);</span></span><br><span class="line">					&#125;</span><br><span class="line">				&#125;)</span><br><span class="line">			&#125;)</span><br><span class="line">		&#125;)</span><br><span class="line">	<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">header</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"user_name"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">%</span> <span class="attr">if</span>(<span class="attr">session.user</span>)&#123; %&gt;</span></span><br><span class="line">				 Hello,<span class="tag">&lt;<span class="name">%=</span> <span class="attr">session.user</span> %&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">%</span> &#125; %&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">%</span> <span class="attr">if</span>(!<span class="attr">session.user</span>)&#123; %&gt;</span></span><br><span class="line">				欢迎注册登录^_^</span><br><span class="line">			<span class="tag">&lt;<span class="name">%</span> &#125; %&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"message"</span>&gt;</span>登录成功<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"user_right"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">%</span>  <span class="attr">if</span>(<span class="attr">session.user</span>)&#123; %&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"has_user"</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">a</span> <span class="attr">target</span>=<span class="string">"__blank"</span> <span class="attr">href</span>=<span class="string">"https://github.com/wclimb/Koa2-blog"</span>&gt;</span>GitHub<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">%</span> <span class="attr">if</span>(<span class="attr">type</span> == <span class="string">'all'</span>)&#123; %&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"active"</span> <span class="attr">href</span>=<span class="string">"/posts"</span>&gt;</span>全部文章<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">%</span> &#125;<span class="attr">else</span>&#123; %&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/posts"</span>&gt;</span>全部文章<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">%</span> &#125;%&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">%</span> <span class="attr">if</span>(<span class="attr">type</span> == <span class="string">'my'</span>)&#123; %&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"active"</span> <span class="attr">href</span>=<span class="string">"/posts?author=&lt;%= session.user %&gt;"</span>&gt;</span>我的文章<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">%</span> &#125;<span class="attr">else</span>&#123; %&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/posts?author=&lt;%= session.user %&gt;"</span>&gt;</span>我的文章<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">%</span> &#125;%&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">%</span> <span class="attr">if</span>(<span class="attr">type</span> == <span class="string">'create'</span>)&#123; %&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"active"</span> <span class="attr">href</span>=<span class="string">"/create"</span>&gt;</span>发表文章<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">%</span> &#125;<span class="attr">else</span>&#123; %&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/create"</span>&gt;</span>发表文章<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">%</span> &#125;%&gt;</span></span><br><span class="line">					</span><br><span class="line">					<span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"signout"</span>&gt;</span>登出<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">%</span> &#125; %&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">%</span> <span class="attr">if</span>(!<span class="attr">session.user</span>)&#123; %&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"none_user has_user"</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">a</span> <span class="attr">target</span>=<span class="string">"__blank"</span> <span class="attr">href</span>=<span class="string">"https://github.com/wclimb/Koa2-blog"</span>&gt;</span>GitHub<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">%</span> <span class="attr">if</span>(<span class="attr">type</span> == <span class="string">'all'</span>)&#123; %&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"active"</span> <span class="attr">href</span>=<span class="string">"/posts"</span>&gt;</span>全部文章<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">%</span> &#125;<span class="attr">else</span>&#123; %&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/posts"</span>&gt;</span>全部文章<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">%</span> &#125;%&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">%</span> <span class="attr">if</span>(<span class="attr">type</span> == <span class="string">'signup'</span>)&#123; %&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"active"</span> <span class="attr">href</span>=<span class="string">"/signup"</span>&gt;</span>注册<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">%</span> &#125;<span class="attr">else</span>&#123; %&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/signup"</span>&gt;</span>注册<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">%</span> &#125;%&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">%</span> <span class="attr">if</span>(<span class="attr">type</span> == <span class="string">'signin'</span>)&#123; %&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"active"</span> <span class="attr">href</span>=<span class="string">"/signin"</span>&gt;</span>登录<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">%</span> &#125;<span class="attr">else</span>&#123; %&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/signin"</span>&gt;</span>登录<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">%</span> &#125;%&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">%</span> &#125; %&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>首先我们看到用到了session.user，这个值从哪来呢？请看下面的代码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 注册页面</span></span><br><span class="line">router.get(<span class="string">'/signup'</span>, <span class="keyword">async</span>(ctx, next) =&gt; &#123;</span><br><span class="line">    <span class="keyword">await</span> checkNotLogin(ctx)</span><br><span class="line">    <span class="keyword">await</span> ctx.render(<span class="string">'signup'</span>, &#123;</span><br><span class="line">        session: ctx.session,</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>我们可以看到我们向模板传了一个session值，session:ctx.session，这个值存取的就是用户的信息，包括用户名、登录之后的id等，session一般是你关闭浏览器就过期了，等于下次打开浏览器的时候就得重新登录了，用if判断他存不存在，就可以知道用户是否需要登录，如果不存在用户，则只显示全部文章 注册 登录 ,如果session.user存在则有登出的按钮。</p>
+<p>在上面我们会看到我用了另外一个if判断，判断type类型，这样做的目的是比如我们登录注册页面，注册页面的导航会高亮，其实就是添加了<code>class：active</code>;<br>之后我们每个ejs文件的头部会这样写<code>&lt;%- include(&quot;header&quot;,{type:&#39;signup&#39;}) %&gt;</code> 登录页面则是<code>&lt;%- include(&quot;header&quot;,{type:&#39;signin&#39;}) %&gt;</code>。</p>
+<p>修改views/signup.ejs</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">%-</span> <span class="attr">include</span>("<span class="attr">header</span>",&#123;<span class="attr">type:</span>'<span class="attr">signup</span>'&#125;) %&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">form</span> <span class="attr">class</span>=<span class="string">"form create"</span> <span class="attr">method</span>=<span class="string">"post"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">label</span>&gt;</span>用户名：<span class="tag">&lt;/<span class="name">label</span>&gt;</span> </span><br><span class="line">				<span class="tag">&lt;<span class="name">input</span> <span class="attr">placeholder</span>=<span class="string">"请输入用户名"</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"name"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">label</span>&gt;</span>密码：<span class="tag">&lt;/<span class="name">label</span>&gt;</span> </span><br><span class="line">				<span class="tag">&lt;<span class="name">input</span> <span class="attr">placeholder</span>=<span class="string">"请输入密码"</span> <span class="attr">class</span>=<span class="string">"password"</span> <span class="attr">type</span>=<span class="string">"password"</span> <span class="attr">name</span>=<span class="string">"password"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">label</span>&gt;</span>重复密码：<span class="tag">&lt;/<span class="name">label</span>&gt;</span> </span><br><span class="line">				<span class="tag">&lt;<span class="name">input</span> <span class="attr">placeholder</span>=<span class="string">"请确认密码"</span> <span class="attr">class</span>=<span class="string">"repeatpass"</span> <span class="attr">type</span>=<span class="string">"password"</span> <span class="attr">name</span>=<span class="string">"repeatpass"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">label</span>&gt;</span>上传头像：<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">name</span>=<span class="string">"avator"</span> <span class="attr">id</span>=<span class="string">"avator"</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">id</span>=<span class="string">"avatorVal"</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">"preview"</span> <span class="attr">alt</span>=<span class="string">"预览头像"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"submit"</span>&gt;</span>注册<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">		$(<span class="built_in">window</span>).keyup(<span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span></span><br><span class="line"><span class="actionscript">			<span class="comment">//console.log(e.keyCode)</span></span></span><br><span class="line">			if (e.keyCode == 13) &#123;</span><br><span class="line"><span class="javascript">				$(<span class="string">'.submit'</span>).click()</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;)</span><br><span class="line"><span class="javascript">		$(<span class="string">'#avator'</span>).change(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="actionscript">			<span class="keyword">if</span> (<span class="keyword">this</span>.files.length != <span class="number">0</span>) &#123;</span></span><br><span class="line"><span class="actionscript">				<span class="keyword">var</span> file = <span class="keyword">this</span>.files[<span class="number">0</span>],</span></span><br><span class="line"><span class="actionscript">					reader = <span class="keyword">new</span> FileReader();</span></span><br><span class="line">				if (!reader) &#123;</span><br><span class="line"><span class="actionscript">					<span class="keyword">this</span>.value = <span class="string">''</span>;</span></span><br><span class="line"><span class="actionscript">					<span class="keyword">return</span>;</span></span><br><span class="line">				&#125;;</span><br><span class="line"><span class="javascript">				<span class="built_in">console</span>.log(file.size)</span></span><br><span class="line">				if (file.size &gt;= 1024 * 1024 / 2) &#123;</span><br><span class="line"><span class="actionscript">					fade(<span class="string">"请上传小于512kb的图片!"</span>)</span></span><br><span class="line"><span class="actionscript">					<span class="keyword">return</span> </span></span><br><span class="line">				&#125;</span><br><span class="line"><span class="actionscript">				reader.onload = <span class="function"><span class="keyword">function</span> <span class="params">(e)</span> </span>&#123;</span></span><br><span class="line"><span class="actionscript">					<span class="keyword">this</span>.value = <span class="string">''</span>;</span></span><br><span class="line"><span class="javascript">					$(<span class="string">'form .preview'</span>).attr(<span class="string">'src'</span>, e.target.result)</span></span><br><span class="line"><span class="javascript">					$(<span class="string">'form .preview'</span>).fadeIn()</span></span><br><span class="line"><span class="javascript">					$(<span class="string">'#avatorVal'</span>).val(e.target.result)</span></span><br><span class="line">				&#125;;</span><br><span class="line">				reader.readAsDataURL(file);</span><br><span class="line">			&#125;;</span><br><span class="line">		&#125;)</span><br><span class="line"><span class="javascript">		$(<span class="string">'.submit'</span>).click(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span></span><br><span class="line"><span class="actionscript">			<span class="comment">// console.log($('.form').serialize())</span></span></span><br><span class="line"><span class="javascript">			<span class="keyword">if</span> ($(<span class="string">'input[name=name]'</span>).val().trim() == <span class="string">''</span>) &#123;</span></span><br><span class="line"><span class="actionscript">				fade(<span class="string">'请输入用户名！'</span>)</span></span><br><span class="line"><span class="javascript">			&#125;<span class="keyword">else</span> <span class="keyword">if</span>($(<span class="string">'input[name=name]'</span>).val().match(<span class="regexp">/[&lt;'"&gt;]/g</span>))&#123;</span></span><br><span class="line"><span class="actionscript">				fade(<span class="string">'请输入合法字符！'</span>)</span></span><br><span class="line"><span class="javascript">			&#125;<span class="keyword">else</span> <span class="keyword">if</span>($(<span class="string">'#avatorVal'</span>).val() == <span class="string">''</span>)&#123;</span></span><br><span class="line"><span class="actionscript">				fade(<span class="string">'请上传头像！'</span>)</span></span><br><span class="line"><span class="actionscript">			&#125;<span class="keyword">else</span>&#123;</span></span><br><span class="line"><span class="javascript">				$.ajax(&#123;</span></span><br><span class="line"><span class="actionscript">					url: <span class="string">"/signup"</span>,</span></span><br><span class="line">					data: &#123;</span><br><span class="line"><span class="javascript">						name: $(<span class="string">'input[name=name]'</span>).val(),</span></span><br><span class="line"><span class="javascript">						password: $(<span class="string">'input[name=password]'</span>).val(),</span></span><br><span class="line"><span class="javascript">						repeatpass: $(<span class="string">'input[name=repeatpass]'</span>).val(),</span></span><br><span class="line"><span class="javascript">						avator: $(<span class="string">'#avatorVal'</span>).val(),</span></span><br><span class="line">					&#125;,</span><br><span class="line"><span class="actionscript">					type: <span class="string">"POST"</span>,</span></span><br><span class="line"><span class="actionscript">					cache: <span class="literal">false</span>,</span></span><br><span class="line"><span class="actionscript">					dataType: <span class="string">'json'</span>,</span></span><br><span class="line"><span class="actionscript">					success: <span class="function"><span class="keyword">function</span> <span class="params">(msg)</span> </span>&#123;</span></span><br><span class="line">					   if (msg.data == 1) &#123;           		</span><br><span class="line"><span class="javascript">						   $(<span class="string">'input'</span>).val(<span class="string">''</span>)</span></span><br><span class="line"><span class="actionscript">						   fade(<span class="string">'用户名存在'</span>)</span></span><br><span class="line">					   &#125;</span><br><span class="line"><span class="actionscript">					   <span class="keyword">else</span> <span class="keyword">if</span> (msg.data == <span class="number">2</span>)&#123;</span></span><br><span class="line"><span class="actionscript">							fade(<span class="string">'请输入重复的密码'</span>)	               		</span></span><br><span class="line">					   &#125;</span><br><span class="line"><span class="actionscript">					   <span class="keyword">else</span> <span class="keyword">if</span>(msg.data == <span class="number">3</span>)&#123;</span></span><br><span class="line"><span class="actionscript">							fade(<span class="string">'注册成功'</span>)</span></span><br><span class="line"><span class="javascript">							setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span></span><br><span class="line"><span class="javascript">								<span class="built_in">window</span>.location.href=<span class="string">"/signin"</span>	  </span></span><br><span class="line">							&#125;,1000)</span><br><span class="line">					   	&#125;</span><br><span class="line">					&#125;,</span><br><span class="line"><span class="actionscript">					error: <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</span></span><br><span class="line"><span class="actionscript">						alert(<span class="string">'异常'</span>);</span></span><br><span class="line">	</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;)			</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;)		</span><br><span class="line">	<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">%</span> <span class="attr">include</span> <span class="attr">footer</span> %&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>修改routers/signup.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// post 注册</span></span><br><span class="line">router.post(<span class="string">'/signup'</span>, <span class="keyword">async</span>(ctx, next) =&gt; &#123;</span><br><span class="line">    <span class="comment">//console.log(ctx.request.body)</span></span><br><span class="line">    <span class="keyword">let</span> user = &#123;</span><br><span class="line">        name: ctx.request.body.name,</span><br><span class="line">        pass: ctx.request.body.password,</span><br><span class="line">        repeatpass: ctx.request.body.repeatpass,</span><br><span class="line">        avator: ctx.request.body.avator</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">await</span> userModel.findDataByName(user.name)</span><br><span class="line">        .then(<span class="keyword">async</span> (result) =&gt; &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(result)</span><br><span class="line">            <span class="keyword">if</span> (result.length) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">throw</span> <span class="built_in">Error</span>(<span class="string">'用户已经存在'</span>)</span><br><span class="line">                &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">                    <span class="comment">//处理err</span></span><br><span class="line">                    <span class="built_in">console</span>.log(error)</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// 用户存在</span></span><br><span class="line">                ctx.body = &#123;</span><br><span class="line">                    data: <span class="number">1</span></span><br><span class="line">                &#125;;;</span><br><span class="line">                </span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (user.pass !== user.repeatpass || user.pass === <span class="string">''</span>) &#123;</span><br><span class="line">                ctx.body = &#123;</span><br><span class="line">                    data: <span class="number">2</span></span><br><span class="line">                &#125;;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// ctx.session.user=ctx.request.body.name   </span></span><br><span class="line">                <span class="keyword">let</span> base64Data = user.avator.replace(<span class="regexp">/^data:image\/\w+;base64,/</span>, <span class="string">""</span>);</span><br><span class="line">                <span class="keyword">let</span> dataBuffer = <span class="keyword">new</span> Buffer(base64Data, <span class="string">'base64'</span>);</span><br><span class="line">                <span class="keyword">let</span> getName = <span class="built_in">Number</span>(<span class="built_in">Math</span>.random().toString().substr(<span class="number">3</span>)).toString(<span class="number">36</span>) + <span class="built_in">Date</span>.now()</span><br><span class="line">                <span class="keyword">await</span> fs.writeFile(<span class="string">'./public/images/'</span> + getName + <span class="string">'.png'</span>, dataBuffer, err =&gt; &#123; </span><br><span class="line">                    <span class="keyword">if</span> (err) <span class="keyword">throw</span> err;</span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">'头像上传成功'</span>) </span><br><span class="line">                &#125;);            </span><br><span class="line">                <span class="keyword">await</span> userModel.insertData([user.name, md5(user.pass), getName, moment().format(<span class="string">'YYYY-MM-DD HH:mm:ss'</span>)])</span><br><span class="line">                    .then(<span class="function"><span class="params">res</span>=&gt;</span>&#123;</span><br><span class="line">                        <span class="built_in">console</span>.log(<span class="string">'注册成功'</span>,res)</span><br><span class="line">                        <span class="comment">//注册成功</span></span><br><span class="line">                        ctx.body = &#123;</span><br><span class="line">                            data: <span class="number">3</span></span><br><span class="line">                        &#125;;</span><br><span class="line">                    &#125;)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">module</span>.exports = router</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>我们使用md5实现密码加密，长度是32位的</li>
+<li>使用我们之前说的bodyParse来解析提交的数据，通过ctx.request.body得到</li>
+<li>我们引入了数据库的操作 findDataByName和insertData，因为之前我们在/lib/mysql.js中已经把他们写好，并暴露出来了。意思是先从数据库里面查找注册的用户名，如果找到了证明该用户名已经被注册过了，如果没有找到则使用insertData增加到数据库中</li>
+<li>ctx.body 是我们通过ajax提交之后给页面返回的数据，比如提交ajax成功之后msg.data=1的时候就代表用户存在，msg.data出现在后面的signup.ejs模板ajax请求中</li>
+<li>上传头像之前要新建好文件夹，我们ajax发送的是base64的格式，然后使用fs.writeFile来生成图片</li>
+</ul>
+<h2 id="模板引擎ejs"><a href="#模板引擎ejs" class="headerlink" title="模板引擎ejs"></a>模板引擎ejs</h2><p>我们使用的是ejs，语法可以见ejs<br>之前我们写了这么一段代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">router.get(<span class="string">'/signup'</span>,<span class="keyword">async</span> (ctx,next)=&gt;&#123;</span><br><span class="line">	<span class="keyword">await</span> ctx.render(<span class="string">'signup'</span>,&#123;</span><br><span class="line">		session:ctx.session,</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>这里就用到了ejs所需的session 我们通过渲染signup.ejs模板，将值ctx.session赋值给session，之后我们就可以在signup.ejs中使用了<br>ejs的常用标签为：</p>
+<ul>
+<li><code>&lt;% code %&gt;</code>：运行 JavaScript 代码，不输出</li>
+<li><code>&lt;%= code %&gt;</code>：显示转义后的 HTML内容</li>
+<li><code>&lt;%- code %&gt;</code>：显示原始 HTML 内容</li>
+</ul>
+<p><code>&lt;%= code %&gt;</code>和<code>&lt;%- code %&gt;</code>的区别在于：<br><code>&lt;%= code %&gt;</code>不管你写什么都会原样输出，比如code为 <code>&lt;strong&gt;hello&lt;/strong&gt;</code>的时候 <code>&lt;%= code %&gt;</code> 会显示<code>&lt;strong&gt;hello&lt;/strong&gt;</code><br>而&lt;%- code %&gt;则显示<strong>hello</strong>.</p>
+<p>完整源码及部署教程：<a href="https://github.com/growvv/Koa2-blog" target="_blank" rel="noopener">https://github.com/growvv/Koa2-blog</a></p>
+<p>参考链接： <a href="http://www.wclimb.site/2017/07/12/Node-Koa2-Mysql-%E6%90%AD%E5%BB%BA%E7%AE%80%E6%98%93%E5%8D%9A%E5%AE%A2/" target="_blank" rel="noopener">wclimb-Node+Koa2+Mysql 搭建简易博客</a></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>刘大小
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://rogn.top/Node-Koa2-Mysql-Blog/" title="Node+Koa2+Mysql 搭建简易博客">https://rogn.top/Node-Koa2-Mysql-Blog/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/nodejs/" rel="tag"># nodejs</a>
+              <a href="/tags/Koa2/" rel="tag"># Koa2</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/scf-start/" rel="prev" title="如何在VS Code中开发SCF">
+      <i class="fa fa-chevron-left"></i> 如何在VS Code中开发SCF
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目录结构"><span class="nav-number">1.</span> <span class="nav-text">目录结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#首先配置config"><span class="nav-number">2.</span> <span class="nav-text">首先配置config</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置index-js文件"><span class="nav-number">3.</span> <span class="nav-text">配置index.js文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置lib的mysql-js文件"><span class="nav-number">4.</span> <span class="nav-text">配置lib的mysql.js文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现注册页面"><span class="nav-number">5.</span> <span class="nav-text">实现注册页面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完善注册功能"><span class="nav-number">6.</span> <span class="nav-text">完善注册功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模板引擎ejs"><span class="nav-number">7.</span> <span class="nav-text">模板引擎ejs</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘大小"
+      src="https://cdn.jsdelivr.net/gh/growvv/img/images/20200120155454.jpg">
+  <p class="site-author-name" itemprop="name">刘大小</p>
+  <div class="site-description" itemprop="description">越努力越幸运</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/growvv" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;growvv" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:2092876368@qq.com" title="E-Mail → mailto:2092876368@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/smabig_liu" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;smabig_liu" rel="noopener" target="_blank"><i class="fa fa-fw fa-instagram"></i>Instagram</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/rogn01700270" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;rogn01700270" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/growvv" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;growvv" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i>RSS</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.befovy.com/" title="https:&#x2F;&#x2F;blog.befovy.com&#x2F;" rel="noopener" target="_blank">半岛铁酱</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.ioiox.com/" title="https:&#x2F;&#x2F;www.ioiox.com&#x2F;" rel="noopener" target="_blank">IOIOX</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://qianling.pw/" title="https:&#x2F;&#x2F;qianling.pw&#x2F;" rel="noopener" target="_blank">千灵</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.wclimb.site/" title="http:&#x2F;&#x2F;www.wclimb.site&#x2F;" rel="noopener" target="_blank">wclimb</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-Rogn"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘大小</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.0
+  </div>
+
+<span>
+  <span class="post-meta-divider">|</span>
+  本站已运行
+  <span id="showDays"></span>
+</span>
+<script>
+  var seconds = 1000;
+  var minutes = seconds * 60;
+  var hours = minutes * 60;
+  var days = hours * 24;
+  var years = days * 365;
+  var birthDay = Date.UTC(2020,01,20,14,00,00); // 这里设置建站时间
+  setInterval(function() {
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    var now = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = now - birthDay;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById('showDays').innerHTML=""+diffYears+"年"+diffDays+"天"+diffHours+"小时"+diffMinutes+"分钟"+diffSeconds+"秒";
+  }, 1000);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+  <script>
+  function leancloudSelector(url) {
+    url = encodeURI(url);
+    return document.getElementById(url).querySelector('.leancloud-visitors-count');
+  }
+  if (CONFIG.page.isPost) {
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.getAttribute('id'));
+      var title = visitors.getAttribute('data-flag-title');
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .then(response => response.json())
+              .then(() => {
+                leancloudSelector(url).innerText = counter.time + 1;
+              })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              })
+          } else {
+              Counter('post', '/classes/Counter', { title: title, url: url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.error('Failed to create', error);
+                });
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+  } else {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.getAttribute('id'));
+      });
+
+      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length === 0) {
+            document.querySelectorAll('.leancloud_visitors .leancloud-visitors-count').forEach(element => {
+              element.innerText = 0;
+            });
+            return;
+          }
+          for (let item of results) {
+            let { url, time } = item;
+            leancloudSelector(url).innerText = time;
+          }
+          for (let url of entries) {
+            var element = leancloudSelector(url);
+            if (element.innerText == '') {
+              element.innerText = 0;
+            }
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+  }
+
+  fetch('https://app-router.leancloud.cn/2/route?appId=6iXOgO3hMVNg80LUUnEbtJxk-gzGzoHsz')
+    .then(response => response.json())
+    .then(({ api_server }) => {
+      var Counter = (method, url, data) => {
+        return fetch(`https://${api_server}/1.1${url}`, {
+          method: method,
+          headers: {
+            'X-LC-Id': '6iXOgO3hMVNg80LUUnEbtJxk-gzGzoHsz',
+            'X-LC-Key': 'jVJ0fodgXP8K9dqbxzJyxMTT',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.1.0/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: true,
+      notify: true,
+      appId: 'T4y1doOhI3dmbSAq3vSnBV1T-gzGzoHsz',
+      appKey: 'poLzVJBLoYkuCQQfdwmlWku4',
+      placeholder: "不留下邮箱的话，就没有办法邮件回复喔~",
+      avatar: 'retro',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: 'zh-cn' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
