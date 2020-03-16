@@ -3,7 +3,7 @@
   <entry>
     <title>SSR的1080端口被占用</title>
     <url>/1080-port-of-SSR-is-occupied/</url>
-    <content><![CDATA[<h2 id="出现的问题"><a href="#出现的问题" class="headerlink" title="出现的问题"></a>出现的问题</h2><p>刚才Windows更新完，再次打开SSR报错：<br><img data-src="https://cdn.jsdelivr.net/gh/growvv/image-bed/images/20200316174735.png" alt=""><br>如果怕麻烦，直接重启电脑。但下次可能还会出现问题。</p>
+    <content><![CDATA[<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><p>刚才Windows更新完，再次打开SSR报错：<br><img data-src="https://cdn.jsdelivr.net/gh/growvv/image-bed/images/20200316184605.png" alt=""><br>如果怕麻烦，直接重启电脑。但下次可能还会出现问题。</p>
 <a id="more"></a>
 
 <h2 id="分析问题"><a href="#分析问题" class="headerlink" title="分析问题"></a>分析问题</h2><p>本文给出两种方案，仅供参考。</p>
@@ -21,7 +21,7 @@
 <h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>以下两个方法选一个就可以了。<br>随便改成一个没被保留的端口。</p>
 <ol>
 <li>通过SSR客户端<br><img data-src="https://cdn.jsdelivr.net/gh/growvv/image-bed/images/20200316175940.png" alt=""></li>
-<li>修改 <code>gui-config.json</code></li>
+<li>修改 <code>gui-config.json</code><br><img data-src="https://cdn.jsdelivr.net/gh/growvv/image-bed/images/20200316184404.png" alt=""></li>
 </ol>
 <h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ol>
 <li><a href="https://juejin.im/post/5de4fafee51d4530e9129b27" target="_blank" rel="noopener">https://juejin.im/post/5de4fafee51d4530e9129b27</a></li>
