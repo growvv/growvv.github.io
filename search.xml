@@ -1,6 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>SSR的1080端口被占用</title>
+    <url>/1080-port-of-SSR-is-occupied/</url>
+    <content><![CDATA[<h2 id="出现的问题"><a href="#出现的问题" class="headerlink" title="出现的问题"></a>出现的问题</h2><p>刚才更新完电脑，再次打开SSR报错：<br><img data-src="https://cdn.jsdelivr.net/gh/growvv/image-bed/images/20200316174735.png" alt=""><br>如果怕麻烦，直接重启电脑。但下次可能还会出现问题。</p>
+<a id="more"></a>
+
+<h2 id="分析问题"><a href="#分析问题" class="headerlink" title="分析问题"></a>分析问题</h2><p>本文给出两种方案，仅供参考。</p>
+<ul>
+<li>方案一：<br>就像其他博主给出的方案，在CMD里使用 <code>netstat -aon|findstr &quot;1080&quot;</code>，找到占用端口进程的PID，在任务管理器里结束进程。</li>
+<li>方案二：<br>很多时候，你会发现，并没有进程在占用1080端口：</li>
+</ul>
+<p>这个问题并不是端口被占用，通过 netstat 里找不到占用这个端口的程序。实际上，这个错误对应的 last-error 是 10013 （WSAEACCESS），权限不足。</p>
+<p>根据2018年2月13日发布的 KB4074588 里的 known issue，这个补丁会调整操作系统的 reserve port ranges，可以通过运行 以下指令查看。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">netsh interface ipv4 show excludedportrange protocol=tcp</span><br></pre></td></tr></table></figure>
+
+<p>在我自己的环境里，1064 ~ 1163 都被系统强制保留了，所以其他应用程序无法监听在这个端口，比如1080。</p>
+<p><img data-src="https://cdn.jsdelivr.net/gh/growvv/image-bed/images/20200316175718.png" alt=""></p>
+<p>除了系统补丁会保留端口外，开启win10的hyper-v也会保留端口</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><ol>
+<li>通过SSR客户端<br><img data-src="https://cdn.jsdelivr.net/gh/growvv/image-bed/images/20200316175940.png" alt=""><br>随便改成一个没被保留的端口</li>
+<li>修改 <code>gui-config.json</code><br>两个方法选一个就可以了。</li>
+</ol>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ol>
+<li><a href="https://juejin.im/post/5de4fafee51d4530e9129b27" target="_blank" rel="noopener">https://juejin.im/post/5de4fafee51d4530e9129b27</a></li>
+<li><a href="https://github.com/shadowsocks/shadowsocks-windows/issues/1835" target="_blank" rel="noopener">https://github.com/shadowsocks/shadowsocks-windows/issues/1835</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>科学上网</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>JavaScript之函数记忆</title>
     <url>/function-memory/</url>
     <content><![CDATA[<p>函数记忆？？我的理解就是记忆化搜索、以空间换时间，我用C++其实写的挺多的。</p>
